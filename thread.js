@@ -10,12 +10,8 @@ const threadSchema = new Schema({
   replies: {type: [String]}
   
 },{
-  timestamps: true,
-  
-  
+  timestamps: {'createdAt': 'created_on', 'updatedAt': 'bumped_on'}  
 })
-threadSchema.;
-threadSchema.timestamps.updatedAt = 'bumped_on';
 
 threadSchema.pre('save', function(next){
   var user = this;
