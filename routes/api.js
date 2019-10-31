@@ -92,9 +92,11 @@ module.exports = function (app) {
     let thread_id = req.body.thread_id;
     let reply_id = req.body.reply_id;
     let Thread = mongoose.model(board, threadSchema, board);
-    Thread.findOne({_id: thread_id, "replies._id": reply_id})
+    Thread.findOne({_id: thread_id})
     .then(thread => {
-      res.json(thread)
+      let newThread = thread.replies.filter(x => x['_id'] === reply_id)
+      res.json(newThread)
+      // res.json(thread.replies[0]['text'])
     }, err => next(err))
     .catch(err => next(err))
   })
