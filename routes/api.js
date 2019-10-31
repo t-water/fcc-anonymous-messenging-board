@@ -2,7 +2,7 @@
 
 var expect = require('chai').expect;
 const mongoose = require('mongoose');
-const threadSchema = require('../thread')
+const threadSchema = require('../thread');
 
 const CONNECTION_STRING = process.env.DB;
 mongoose.connect(CONNECTION_STRING, {useNewUrlParser: true, useFindAndModify: false});
@@ -13,10 +13,16 @@ module.exports = function (app) {
   app.route('/api/threads/:board')
   .get((req, res, next) => {
     let board = req.params.board;
-    mongoose.model(board, threadSchema, board)
+    
   })
   .post((req, res, next) => {
     let board = req.params.board;
+    let Thread = mongoose.model(board, threadSchema, board);
+    let newThread = new Thread(req.body)
+    newThread.save()
+    .then(data => res.json(data))
+    .catch(err => next(err))
+    
   })
   .put((req, res, next) => {
     let board = req.params.board;

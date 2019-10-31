@@ -10,8 +10,12 @@ const threadSchema = new Schema({
   replies: {type: [String]}
   
 },{
-  timestamps: true
+  timestamps: true,
+  
+  
 })
+threadSchema.;
+threadSchema.timestamps.updatedAt = 'bumped_on';
 
 threadSchema.pre('save', function(next){
   var user = this;
@@ -41,4 +45,4 @@ threadSchema.methods.comparePassword = function(password, cb) {
     });
 };
 
-module.exports(threadSchema)
+module.exports = threadSchema
