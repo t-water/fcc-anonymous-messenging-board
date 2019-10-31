@@ -15,7 +15,7 @@ module.exports = function (app) {
   .get((req, res, next) => {
     let board = req.params.board;
     let Thread = mongoose.model(board, threadSchema, board);
-    Thread.find({})
+    Thread.find({}).limit(10)
     .populate('replies')
     .then(threads => res.json(threads))
     // Thread.aggregate([{$project: {"threeReplies": {$slice: ["$replies", 3]}}}, {$lookup: {from: 'threeReplies', as: 'replies'}}])
