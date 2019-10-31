@@ -1,38 +1,36 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
 const saltWorkFactor = 10;
 
-const threadSchema = new Schema({
+const commentSchema = new Schema({
   text: {type: String, required: true},
-  reported: {type: Boolean, default: false},
   delete_password: {type: String, required: true},
-  replies: {type: [String]}
-  
+  reported: {type: Boolean, default: false}
 },{
-  timestamps: {'createdAt': 'created_on', 'updatedAt': 'bumped_on'}  
+  timestamps: true
 })
 
-threadSchema.pre('save', function(next){
-  var thread = this;
-  if(!thread.isModified('delete_password')){
+commentSchema.pre('save', function(next){
+  var comment = this;
+  if(!comment.isModified('delete_password')){
     return next();
   }
   bcrypt.genSalt(saltWorkFactor, (err, salt) => {
     if(err){
       return next(err)
     }
-    bcrypt.hash(thread.delete_password, salt, (err, hash) =>{
+    bcrypt.hash(comment.delete_password, salt, (err, hash) =>{
       if(err){
         return next(err)
       }
-      thread.delete_password = hash
+      comment.delete_password = hash
       next()
     })
   })
 })
 
-threadSchema.methods.comparePassword = function(password, cb) {
+commentSchema.methods.comparePassword = function(password, cb) {
     bcrypt.compare(password, this.delete_password, function(err, isMatch) {
         if(err){
           return cb(err);
@@ -41,4 +39,4 @@ threadSchema.methods.comparePassword = function(password, cb) {
     });
 };
 
-module.exports = threadSchema
+module.exports = commentSchema;

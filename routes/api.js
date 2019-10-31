@@ -63,6 +63,12 @@ module.exports = function (app) {
   })
   .post((req, res, next) => {
     let board = req.params.board;
+    let Thread = mongoose.model(board, threadSchema, board)
+    let id = req.body.thread_id
+    let text = req.body.text
+    let password = req.body.delete_password
+    Thread.findById(id)
+    .then()
   })
   .put((req, res, next) => {
     let board = req.params.board;
