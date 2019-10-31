@@ -14,7 +14,8 @@ module.exports = function (app) {
   .get((req, res, next) => {
     let board = req.params.board;
     let Thread = mongoose.model(board, threadSchema, board);
-    Thread.find().limit(10)
+    Thread.aggregate([{$project: {'delete_password': 0}}]).limit(10).sort({'created_on': -1})
+    .then(data => res.json(data))
     
   })
   .post((req, res, next) => {
