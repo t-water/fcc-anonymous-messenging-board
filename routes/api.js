@@ -94,7 +94,7 @@ module.exports = function (app) {
     let Thread = mongoose.model(board, threadSchema, board);
     Thread.findOne({_id: thread_id})
     .then(thread => {
-      let reply = thread.replies.filter(x => x['_id'] == reply_id)[0]
+      let reply = thread.replies.id(reply_id)
       reply.reported = true;
       thread.save()
       .then(thread => {res.json("Reported Successfully")},
@@ -106,6 +106,19 @@ module.exports = function (app) {
   
   .delete((req, res, next) => {
     let board = req.params.board;
+    let thread_id = req.body.thread_id;
+    let reply_id = req.body.reply_id;
+    let Thread = mongoose.model(board, threadSchema, board);
+    let password = req.body.delete_password
+    Thread.findOne({_id: thread_id})
+    .then(thread=> {
+      let reply = thread.replies.id(reply_id)
+      reply.comparePassword(password, (err, isMatch) => {
+        if(err)
+        
+      })
+    }, err => next(err))
+    .catch(err => next(err))
   })
 
 };
