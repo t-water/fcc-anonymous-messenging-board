@@ -13,7 +13,7 @@ const threadSchema = new Schema({
   timestamps: true
 })
 
-threadSchema.pre('save', function next(){
+threadSchema.pre('save', function(next){
   var user = this;
   if(!user.isModified('delete_password')){
     return next();
@@ -22,6 +22,23 @@ threadSchema.pre('save', function next(){
     if(err){
       return next(err)
     }
-    brcypt.hash()
+    bcrypt.hash(user.delete_password, salt, (err, hash) =>{
+      if(err){
+        return next(err)
+      }
+      user.delete_password = hash
+      next()
+    })
   })
 })
+
+threadSchema.methods.comparePassword = function(password, cb) {
+    bcrypt.compare(password, this.delete_password, function(err, isMatch) {
+        if(err){
+          return cb(err);
+        } 
+        cb(null, isMatch);
+    });
+};
+
+module.exports(threadSchema)
