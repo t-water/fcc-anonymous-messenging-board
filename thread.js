@@ -7,7 +7,7 @@ const threadSchema = new Schema({
   text: {type: String, required: true},
   reported: {type: Boolean, default: false},
   delete_password: {type: String, required: true},
-  replies: {type: [String]}
+  replies: [{type: mongoose.Schema.Types.ObjectId, ref: 'Reply'}]
   
 },{
   timestamps: {'createdAt': 'created_on', 'updatedAt': 'bumped_on'}  

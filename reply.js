@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
 const saltWorkFactor = 10;
 
-const commentSchema = new Schema({
+const replySchema = new Schema({
   text: {type: String, required: true},
   delete_password: {type: String, required: true},
   reported: {type: Boolean, default: false}
@@ -11,26 +11,26 @@ const commentSchema = new Schema({
   timestamps: true
 })
 
-commentSchema.pre('save', function(next){
-  var comment = this;
-  if(!comment.isModified('delete_password')){
+replySchema.pre('save', function(next){
+  var reply = this;
+  if(!reply.isModified('delete_password')){
     return next();
   }
   bcrypt.genSalt(saltWorkFactor, (err, salt) => {
     if(err){
       return next(err)
     }
-    bcrypt.hash(comment.delete_password, salt, (err, hash) =>{
+    bcrypt.hash(reply.delete_password, salt, (err, hash) =>{
       if(err){
         return next(err)
       }
-      comment.delete_password = hash
+      reply.delete_password = hash
       next()
     })
   })
 })
 
-commentSchema.methods.comparePassword = function(password, cb) {
+replySchema.methods.comparePassword = function(password, cb) {
     bcrypt.compare(password, this.delete_password, function(err, isMatch) {
         if(err){
           return cb(err);
@@ -39,4 +39,6 @@ commentSchema.methods.comparePassword = function(password, cb) {
     });
 };
 
-module.exports = commentSchema;
+const Reply = mongoose.model('Reply', replySchema)
+
+module.exports = Reply;

@@ -3,6 +3,7 @@
 var expect = require('chai').expect;
 const mongoose = require('mongoose');
 const threadSchema = require('../thread');
+const Reply = require('../reply')
 
 const CONNECTION_STRING = process.env.DB;
 mongoose.connect(CONNECTION_STRING, {useNewUrlParser: true, useFindAndModify: false});
@@ -68,7 +69,19 @@ module.exports = function (app) {
     let text = req.body.text
     let password = req.body.delete_password
     Thread.findById(id)
-    .then()
+    .then(thread => {
+      let reply = new Reply({"text": text, "delete_password": password})
+      reply.save()
+      .then(reply => {
+        thread.push(reply)
+        thread.save()
+        .then(thread => {res.json(thread)
+        }, err => next(err))
+        .catch(err => next(err))
+      }, err => next(err))
+      .catch(err => next(err))
+    }, err => next(err))
+    .catch(err => next(err))
   })
   .put((req, res, next) => {
     let board = req.params.board;
