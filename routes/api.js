@@ -15,9 +15,14 @@ module.exports = function (app) {
   .get((req, res, next) => {
     let board = req.params.board;
     let Thread = mongoose.model(board, threadSchema, board);
-    Thread.aggregate([{$project: {"threeReplies": {$slice: ["$replies", 3]}}}]).limit(10).sort({'created_on': -1})
-    .then(data => {res.json(data)}, err => next(err))
-    .catch(err => next(err))
+    Thread.find({})
+    .populate('replies')
+    .then(threads => res.json(threads))
+    // Thread.aggregate([{$project: {"threeReplies": {$slice: ["$replies", 3]}}}, {$lookup: {from: 'threeReplies', as: 'replies'}}])
+    // .then(thread => {
+    //   res.json(thread)
+    // }, err => next(err))
+    // .catch(err => next(err))
     
   })
   .post((req, res, next) => {
