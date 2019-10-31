@@ -114,8 +114,14 @@ module.exports = function (app) {
     .then(thread=> {
       let reply = thread.replies.id(reply_id)
       reply.comparePassword(password, (err, isMatch) => {
-        if(err)
-        
+        if(err){
+          return next(err)
+        }else if(isMatch){
+          reply.remove()
+          thread.save()
+          .then(thread => res.json(thread), err => next(err))
+          .catch(err => next(err))
+        }
       })
     }, err => next(err))
     .catch(err => next(err))
