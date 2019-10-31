@@ -15,7 +15,8 @@ module.exports = function (app) {
     let board = req.params.board;
     let Thread = mongoose.model(board, threadSchema, board);
     Thread.aggregate([{$project: {'delete_password': 0}}]).limit(10).sort({'created_on': -1})
-    .then(data => res.json(data))
+    .then(data => {res.json(data)}, err => next(err))
+    .catch(err => next(err))
     
   })
   .post((req, res, next) => {
@@ -23,14 +24,29 @@ module.exports = function (app) {
     let Thread = mongoose.model(board, threadSchema, board);
     let newThread = new Thread(req.body)
     newThread.save()
-    .then(data => res.json(data))
+    .then(data => {res.json(data)}, err => next(err))
     .catch(err => next(err))
   })
   .put((req, res, next) => {
-    let board = req.params.board;    
+    let board = req.params.board;   
+    let id = req.body.thread_id;
+    let Thread = mongoose.model(board, threadSchema, board)
+    Thread.findByIdAndUpdate(id, {reported: true})
+    .then(data => {
+      res.send("Successfully Reported")
+    }, err => next(err))
+    .catch(err => next(err))
   })
   .delete((req, res, next) => {
     let board = req.params.board;
+    let id = req.body.thread_id;
+    let password = req.body.password;
+    let Thread = mongoose.model(board, threadSchema, board);
+    Thread.findById(id)
+    .then(thread => {
+      thread.comparePassword()
+    }, err => next(err))
+    .catch(err => next(err))
   })
     
   app.route('/api/replies/:board')
