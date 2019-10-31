@@ -15,7 +15,7 @@ module.exports = function (app) {
   .get((req, res, next) => {
     let board = req.params.board;
     let Thread = mongoose.model(board, threadSchema, board);
-    Thread.aggregate([{$project: {'delete_password': 0}}]).limit(10).sort({'created_on': -1})
+    Thread.aggregate([{$project: {"threeReplies": {$slice: ["$replies", 3]}}}]).limit(10).sort({'created_on': -1})
     .then(data => {res.json(data)}, err => next(err))
     .catch(err => next(err))
     
@@ -73,7 +73,7 @@ module.exports = function (app) {
       let reply = new Reply({"text": text, "delete_password": password})
       reply.save()
       .then(reply => {
-        thread.push(reply)
+        thread.replies.push(reply)
         thread.save()
         .then(thread => {res.json(thread)
         }, err => next(err))

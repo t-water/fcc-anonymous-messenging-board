@@ -8,7 +8,7 @@ const replySchema = new Schema({
   delete_password: {type: String, required: true},
   reported: {type: Boolean, default: false}
 },{
-  timestamps: true
+  timestamps: {'createdAt': 'created_on', 'updatedAt': 'bumped_on' }
 })
 
 replySchema.pre('save', function(next){
