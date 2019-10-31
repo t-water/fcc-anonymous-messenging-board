@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const threadSchema = require('../thread');
 
 const CONNECTION_STRING = process.env.DB;
-mongoose.connect(CONNECTION_STRING.concat('/fcc_anonymous_message_board'), {useNewUrlParser: true, useFindAndModify: false});
+mongoose.connect(CONNECTION_STRING, {useNewUrlParser: true, useFindAndModify: false});
 
 
 module.exports = function (app) {
@@ -13,6 +13,8 @@ module.exports = function (app) {
   app.route('/api/threads/:board')
   .get((req, res, next) => {
     let board = req.params.board;
+    let Thread = mongoose.model(board, threadSchema, board);
+    Thread.find().limit(10)
     
   })
   .post((req, res, next) => {
@@ -22,10 +24,9 @@ module.exports = function (app) {
     newThread.save()
     .then(data => res.json(data))
     .catch(err => next(err))
-    
   })
   .put((req, res, next) => {
-    let board = req.params.board;
+    let board = req.params.board;    
   })
   .delete((req, res, next) => {
     let board = req.params.board;
