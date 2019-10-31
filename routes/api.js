@@ -40,11 +40,19 @@ module.exports = function (app) {
   .delete((req, res, next) => {
     let board = req.params.board;
     let id = req.body.thread_id;
-    let password = req.body.password;
+    let password = req.body.delete_password;
     let Thread = mongoose.model(board, threadSchema, board);
-    Thread.findById(id)
+    Thread.findOne({_id: id})
     .then(thread => {
-      thread.comparePassword()
+      thread.comparePassword(password, (err, isMatch) => {
+        if(err){
+          return(next(err))
+        }else if(isMatch){
+          Thread.findByIdAndDelete(id)
+          .then(data => res.send('Deleted Successfully'), err => next(err))
+          .catch(err => next(err))
+        }
+      })
     }, err => next(err))
     .catch(err => next(err))
   })
