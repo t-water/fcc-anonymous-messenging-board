@@ -15,12 +15,15 @@ module.exports = function (app) {
   .get((req, res, next) => {
     let board = req.params.board;
     let Thread = mongoose.model(board, threadSchema, board);
-    Thread.find({}, {delete_password: 0, reported: 0}, {replies: {$slice: 3}}).project({"replies.delete_password": 0, "replies.reported": 0}).limit(10)
-    .populate('replies')
-    .then(threads => {
-      res.json(threads)
-    }, err => next(err))
-    .catch(err => next(err))
+    Thread.aggregate([{$limit: 10}, {$project: {delete_password: 0, reported: 0}}])
+    .exec(Thread.populate({path: 'replies'}))
+    .then(threads => res.json(threads))
+    // Thread.find({}, {delete_password: 0, reported: 0}, {replies: {$slice: 3}})
+    // .populate('replies')
+    // .then(threads => {
+    //   res.json(threads)
+    // }, err => next(err))
+    // .catch(err => next(err))
     
   })
   .post((req, res, next) => {
