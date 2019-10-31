@@ -87,6 +87,14 @@ module.exports = function (app) {
   })
   .put((req, res, next) => {
     let board = req.params.board;
+    let thread_id = req.body.thread_id;
+    let reply_id = req.body.reply_id;
+    let Thread = mongoose.model(board, threadSchema, board);
+    Thread.findOne({_id: thread_id, "replies._id": reply_id})
+    .then(thread => {
+      res.json(thread)
+    }, err => next(err))
+    .catch(err => next(err))
   })
   .delete((req, res, next) => {
     let board = req.params.board;
