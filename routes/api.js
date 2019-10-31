@@ -94,9 +94,12 @@ module.exports = function (app) {
     let Thread = mongoose.model(board, threadSchema, board);
     Thread.findOne({_id: thread_id})
     .then(thread => {
-      let newThread = thread.replies.filter(x => x['_id'] === reply_id)
-      res.json(newThread)
-      // res.json(thread.replies[0]['text'])
+      let reply = thread.replies.filter(x => x['_id'] == reply_id)[0]
+      reply.reported = true;
+      thread.save()
+      .then(thread => {res.json("Reported Successfully")},
+      err => next(err))
+      .catch(err => next(err))
     }, err => next(err))
     .catch(err => next(err))
   })
