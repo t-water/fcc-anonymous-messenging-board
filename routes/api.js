@@ -22,6 +22,7 @@ module.exports = function (app) {
     })
     
   })
+  
   .post((req, res, next) => {
     let board = req.params.board;
     let Thread = mongoose.model(board, threadSchema, board);
@@ -30,6 +31,7 @@ module.exports = function (app) {
     .then(data => {res.json(data)}, err => next(err))
     .catch(err => next(err))
   })
+  
   .put((req, res, next) => {
     let board = req.params.board;   
     let id = req.body.thread_id;
@@ -40,6 +42,7 @@ module.exports = function (app) {
     }, err => next(err))
     .catch(err => next(err))
   })
+  
   .delete((req, res, next) => {
     let board = req.params.board;
     let id = req.body.thread_id;
@@ -64,6 +67,7 @@ module.exports = function (app) {
   .get((req, res, next) => {
     let board = req.params.board;
   })
+  
   .post((req, res, next) => {
     let board = req.params.board;
     let Thread = mongoose.model(board, threadSchema, board)
@@ -72,19 +76,17 @@ module.exports = function (app) {
     let password = req.body.delete_password
     Thread.findById(id)
     .then(thread => {
-      // let reply = new Reply()
-      // reply.save()
-      // .then(reply => {
         thread.replies.push({"text": text, "delete_password": password})
         thread.save()
-        .then(thread => {res.json(thread)
+        .then(thread => {
+          res.json(thread)
         }, err => next(err))
         .catch(err => next(err))
-      // }, err => next(err))
       .catch(err => next(err))
     }, err => next(err))
     .catch(err => next(err))
   })
+ 
   .put((req, res, next) => {
     let board = req.params.board;
     let thread_id = req.body.thread_id;
@@ -96,6 +98,7 @@ module.exports = function (app) {
     }, err => next(err))
     .catch(err => next(err))
   })
+  
   .delete((req, res, next) => {
     let board = req.params.board;
   })
