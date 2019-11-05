@@ -20,18 +20,24 @@
         <h2>Select a Board or Create a New One</h2>
       </div>
       
-      <h4>New thread</h4>
+      <h2>New thread</h2>
         <form action="/api/threads/test" method="post" id="new-thread">
-          <div form-row>
+          <div class="form-row mb-3">
             <label for="new-thread-board">Board: </label>
             <input class="form-control" type="text" placeholder="Board" id="new-thread-board" name="board" required>
           </div>
-          <div class="form-row">
-            <label></label>
-            <textarea class="form-control" type=text" placeholder='Thread text...' name='text' required></textarea>
+          <div class="form-row mb-3">
+            <label for="new-thread-text">Text: </label>
+            <textarea class="form-control" id="new-thread-text" type="text" placeholder="Thread text..." name="text" required></textarea>
           </div>
-          <input type='text' placeholder='password to delete' name='delete_password' required>
-          <input type="submit" value="Submit">
+          <div class="form-row mb-3">
+            <label for="new-thread-password">Password To Delete Thread: </label>
+            <input id="new-thread-password" class="form-control" type="text" placeholder="password to delete" name="delete_password" required>
+          </div>
+          <div class="form-row">
+            <button class="btn btn-success" type="submit">Submit</button>
+          </div>
+          
         </form>
     </div>
 <!--     <div id='testui'>
@@ -92,7 +98,7 @@
           }
         })
         $('#new-thread').submit(function(){
-          var board = $('#board1').val();
+          var board = $('#new-thread-board').val();
           $(this).attr('action', "/api/threads/" + board);
         });
         $('#newReply').submit(function(){

@@ -38,8 +38,19 @@ module.exports = function(app) {
     let Thread = mongoose.model(board, threadSchema, board);
     let newThread = new Thread(req.body)
     newThread.save()
-    .then(data => {res.json(data)}, err => next(err))
-    .catch(err => next(err))
+    .then(data => {
+      res.statusCode = 200;
+      res.setHeader('Content-type', 'application/json')
+      res.json(data)
+      res.redirect('/b/' + req.params.board)
+    }, err => {
+      res.statusCode = 500;
+      res.send('Thread Failed To Send');
+    })
+    .catch(err => {
+      res.statusCode = 500;
+      res.send('Thread Failed To Send');
+    })
   })
   
   .put((req, res, next) => {
