@@ -3,13 +3,23 @@
 var expect = require('chai').expect;
 const mongoose = require('mongoose');
 const threadSchema = require('../thread');
-// const Reply = require('../reply')
 
 const CONNECTION_STRING = process.env.DB;
 mongoose.connect(CONNECTION_STRING, {useNewUrlParser: true, useFindAndModify: false});
 
 
-module.exports = function (app) {
+module.exports = function(app) {
+  app.route('/api/threads')
+  .get((req, res, next) => {
+    mongoose.connection.db.listCollections().toArray((err, names) => {
+      if(err){
+        res.statusCode = 404;
+        res.json('Collections could not be retrieved.')
+      }else{
+        res.json(names)
+      }
+    })
+  })
   
   app.route('/api/threads/:board')
   .get((req, res, next) => {
