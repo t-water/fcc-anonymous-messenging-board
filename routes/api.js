@@ -41,8 +41,8 @@ module.exports = function(app) {
     .then(data => {
       res.statusCode = 200;
       res.setHeader('Content-type', 'application/json')
-      res.json(data)
-      res.redirect('/b/' + req.params.board)
+      // res.json(data)
+      res.redirect('/b/' + req.params.board + '/')
     }, err => {
       res.statusCode = 500;
       res.send('Thread Failed To Send');
