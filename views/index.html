@@ -15,22 +15,29 @@
   </head>
   <body>
     <div class="container-fluid">
-      <h1>Anonymous Message Board</h1>
+      <h1 class="text-center">Anonymous Message Board</h1>
       <div id="board-links">
-        <h2>Boards</h2>
+        <h2>Select a Board or Create a New One</h2>
       </div>
-      <h2><a href='/b/general/'>Go to testing <i>'/b/general/'</i> board</a></h2>
-    </div>
-    <div id='testui'>
-      <h2 style="text-align: left">API Tests:</h2>
-        <h4>New thread (POST /api/threads/:board)</h4>
-        <form action="/api/threads/test" method="post" id="newThread">
-          <input type='text' placeholder='board' id='board1' name='board' required=''><br>
-          <textarea type='text' placeholder='Thread text...' name='text' required=''></textarea><br>
-          <input type='text' placeholder='password to delete' name='delete_password' required=''><br>
+      
+      <h4>New thread</h4>
+        <form action="/api/threads/test" method="post" id="new-thread">
+          <div form-row>
+            <label for="new-thread-board">Board: </label>
+            <input class="form-control" type="text" placeholder="Board" id="new-thread-board" name="board" required>
+          </div>
+          <div class="form-row">
+            <label></label>
+            <textarea class="form-control" type=text" placeholder='Thread text...' name='text' required></textarea>
+          </div>
+          <input type='text' placeholder='password to delete' name='delete_password' required>
           <input type="submit" value="Submit">
         </form>
-        <hr>
+    </div>
+<!--     <div id='testui'>
+      <h2 style="text-align: left">API Tests:</h2> -->
+
+<!--         <hr>
         <h4>Report thread (PUT /api/threads/:board)</h4>
         <form id="reportThread">
           <input type='text' placeholder='board' id='board2' name='board' required=''><br>
@@ -72,19 +79,19 @@
           <input type='text' placeholder='id to delete' name='reply_id' required=''><br>
           <input type='text' placeholder='password' name='delete_password' required=''><br>
           <input type="submit" value="Submit">
-        </form>        
-    </div>
+        </form>         -->
+<!--     </div> -->
     <script>
       $(function() {
         $.ajax({
           url: '/api/threads',
           success: function(data){
             data.forEach(x => {
-              $('#board-links').append('<p><a href=""></a></p')
+              $('#board-links').append('<p><a class="board-link" href="/b/' + x.name + '/">' + x.name + '</a></p>')
             })
           }
         })
-        $('#newThread').submit(function(){
+        $('#new-thread').submit(function(){
           var board = $('#board1').val();
           $(this).attr('action', "/api/threads/" + board);
         });
