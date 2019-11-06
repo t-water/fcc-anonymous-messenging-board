@@ -25,13 +25,10 @@ module.exports = function(app) {
   .get((req, res, next) => {
     let board = req.params.board;
     let Thread = mongoose.model(board, threadSchema, board);
-    Thread.aggregate([{$limit: 10}, {$project: {delete_password: 0, reported: 0}}, {$sort: {'bumped_on': -1}}])
+    Thread.aggregate([{$limit: 10}, {$project: {delete_password: 0, reported: 0, 'replies.delete_password': 0}}, {$sort: {'bumped_on': -1}}])
     .then(aggregated_threads => {
-      Thread.populate(aggregated_threads, {path: 'replies', select: '-delete_password -reported', options: {limit: 3, sort: {'bumped_on': -1}}})
-      .then(populated_threads => {
-        populated_threads.forEach(x => {x.reply_count = x.replies.length})
-        // res.json(populated_threads)
-      })
+      aggregated_threads.forEach(x => x.reply_count = x.replies.length)
+      res.json(aggregated_threads)
     })
     
   })
@@ -44,7 +41,6 @@ module.exports = function(app) {
     .then(data => {
       res.statusCode = 200;
       res.setHeader('Content-type', 'application/json')
-      // res.json(data)
       res.redirect('/b/' + req.params.board + '/')
     }, err => {
       res.statusCode = 500;
