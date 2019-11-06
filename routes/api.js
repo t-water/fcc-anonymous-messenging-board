@@ -147,7 +147,11 @@ module.exports = function(app) {
         }else if(isMatch){
           reply.remove()
           thread.save()
-          .then(thread => res.json(thread), err => next(err))
+          .then(thread => {
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/text')
+            res.json('Reply Successfully Deleted')
+          }, err => next(err))
           .catch(err => next(err))
         }
       })
