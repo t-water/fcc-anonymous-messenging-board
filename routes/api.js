@@ -26,9 +26,12 @@ module.exports = function(app) {
     let board = req.params.board;
     let Thread = mongoose.model(board, threadSchema, board);
     Thread.aggregate([{$limit: 10}, {$project: {delete_password: 0, reported: 0}}, {$sort: {'bumped_on': -1}}])
-    .then(threads => {
-      Thread.populate(threads, {path: 'replies', select: '-delete_password -reported', options: {limit: 3, sort: {'bumped_on': -1}}})
-      .then(threads => res.json(threads))
+    .then(aggregated_threads => {
+      Thread.populate(aggregated_threads, {path: 'replies', select: '-delete_password -reported', options: {limit: 3, sort: {'bumped_on': -1}}})
+      .then(populated_threads => {
+        populated_threads.forEach(x => {x.reply_count})
+        res.json(populated_threads)
+      })
     })
     
   })
