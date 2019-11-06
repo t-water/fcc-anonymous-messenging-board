@@ -104,15 +104,33 @@ module.exports = function(app) {
     let password = req.body.delete_password
     Thread.findById(id)
     .then(thread => {
+      if(thread != null){
         thread.replies.push({"text": text, "delete_password": password})
         thread.save()
-        .then(thread => {
-          res.json(thread)
-        }, err => next(err))
-        .catch(err => next(err))
-      .catch(err => next(err))
-    }, err => next(err))
-    .catch(err => next(err))
+        .then(threadWithReply => {
+          res.statusCode = 200;
+          res.setHeader('Content-Type', 'application/json')
+          res.json(threadWithReply)
+        }, err => {
+          res.statusCode = 500;
+          res.send('Error Saving Reply')
+        })
+        .catch(err => {
+          res.statusCode = 500;
+          res.send('Error Saving Reply')
+        })
+      }else{
+        res.statusCode = 404;
+        res.send('Could not find thread with id: ' + req.body.thread_id)
+      }
+    }, err=> {
+      res.statusCode = 500;
+      res.send('Server Error When Attempting to Find Thread with ID: ' + req.body.thread_id)
+    })
+    .catch(err => {
+      res.statusCode = 500;
+      res.send('Server Error When Attempting to Find Thread with ID: ' + req.body.thread_id)
+    })
   })
  
   .put((req, res, next) => {

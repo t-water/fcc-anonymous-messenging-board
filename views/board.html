@@ -65,7 +65,7 @@
               thread += ('</div>')
             })
             thread += ('<div class="newReply mt-5">')
-            thread += ('<form action="/api/replies/'+currentBoard+'/" method="post" id="newReply">');
+            thread += ('<form method="post" id="new-reply">');
             thread += ('<h3>Add New Reply</h3><hr class="mt-0"/>')
             thread += ('<input type="hidden" name="thread_id" value="'+x._id+'">');
             thread += ('<div class="form-row mb-3"><textarea class="form-control col-12" rows="5" type="text" placeholder="Quick reply..." name="text" required=""></textarea></div>');
@@ -85,8 +85,13 @@
           }
         });
         
-        $('#newThread').submit(function(){
-          $(this).attr('action', "/api/threads/" + currentBoard);
+        $('#newThread').submit(function(e){
+          $.ajax({
+            url: "/api/threads/" + currentBoard,
+            data: $(this).serialize()
+          })
+          e.preventDefault();
+          $(this).attr('action', );
         });
         
         $('#board-display').on('submit','#report-thread', function(e) {
