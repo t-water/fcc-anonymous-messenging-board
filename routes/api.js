@@ -62,12 +62,9 @@ module.exports = function(app) {
     let Thread = mongoose.model(board, threadSchema, board)
     Thread.findByIdAndUpdate(id, {reported: true})
     .then(thread => {
-      if(thread){
-              res.statusCode = 200;
-        res.setHeader('Content-type', 'application/json')
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/text')
         res.send("Successfully Reported")
-      }
-
     }, err => {
       res.statusCode = 500;
       res.send('Could not report thread with id: ' + id)

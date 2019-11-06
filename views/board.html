@@ -92,7 +92,9 @@
             type: "PUT",
             url: url,
             data: $(this).serialize(),
-            success: function(data) { console.log(data) }
+            success: function(data){
+              alert(data)
+            }
           });
           e.preventDefault();
         });
