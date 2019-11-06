@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Welcome to HyperDev!</title>
+    <title>Anonymous Messenging App</title>
     <meta name="description" content="A cool thing made with HyperDev">
     <link id="favicon" rel="icon" href="https://hyperdev.com/favicon-app.ico" type="image/x-icon">
     <meta charset="utf-8">
@@ -45,7 +45,6 @@
         
         function displayThreads(threads){
           threads.forEach(x => {
-            console.log(x)
             let thread = ''
             thread += '<div class="thread px-2 px-md-5"><div class="main">';
             thread += ('<form id="report-thread"><div class="form-row"><h2 class="col-12 col-sm-10 col-md-11 thread-title">' + x.text + '</h2><input type="hidden" name="report_id" value="'+x._id+'"><button type="submit" class="btn btn-warning col-12 col-sm-2 col-md-1">Report</button></div></form>')
@@ -85,13 +84,16 @@
           }
         });
         
-        $('#newThread').submit(function(e){
+        $('#board-display').on('submit', '#new-reply', function(e){
           $.ajax({
-            url: "/api/threads/" + currentBoard,
-            data: $(this).serialize()
+            url: "/api/replies/" + currentBoard,
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function(data){
+              location.reload();
+            }
           })
           e.preventDefault();
-          $(this).attr('action', );
         });
         
         $('#board-display').on('submit','#report-thread', function(e) {
