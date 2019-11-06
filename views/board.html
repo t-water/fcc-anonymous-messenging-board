@@ -21,7 +21,10 @@
         <form id="newThread" method="post" action="/api/">
           <textarea rows="8" cols="120" type='text' placeholder='Thread text...' name='text' required=''></textarea><br>
           <input type='text' placeholder='password to delete' name='delete_password' required=''><br>
-          <input type="submit" value="Submit">
+          <div class="form-row">
+            <button class="btn btn-success" type="submit">Submit</button>
+          </div>
+          
         </form>
       </div>
       <div id="board-display">
@@ -40,9 +43,9 @@
             let thread = ''
             thread += '<div class="thread"><div class="main">';
             thread += ('<h3>' + x.text + '</h3>')
+            thread += ('<form id="reportThread"><div class="form-row"><input type="hidden" name="report_id" value="'+x._id+'"><button type="submit" class="btn btn-warning">Report</button></div></form>')
             thread += ('<p class="id">id: ' + x._id + ' (' + x.created_on+')</p>');
-            thread += ('<form id="reportThread"><input type="hidden" name="report_id" value="'+x._id+'"><input type="submit" value="Report"></form>')
-            thread += ('<form id="deleteThread"><input type="hidden" value="' + x._id + '" name="thread_id" required=""><input type="text" placeholder="password" name="delete_password" required=""><input type="submit" value="Delete"></form>')
+            thread += ('<form id="deleteThread"><div class="form-row"><input type="hidden" value="' + x._id + '" name="thread_id" required><input class="form-control col-12 col-md-3" type="text" placeholder="delete thread password" name="delete_password" required><button type="submit" class="btn btn-danger">Delete</button></div></form>')
             thread += ('</div><div class="replies">')
             var hiddenCount = x.reply_count - 3;
             if (hiddenCount < 1) { hiddenCount = 0 }
