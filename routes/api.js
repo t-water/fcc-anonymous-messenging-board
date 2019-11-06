@@ -30,7 +30,7 @@ module.exports = function(app) {
       Thread.populate(aggregated_threads, {path: 'replies', select: '-delete_password -reported', options: {limit: 3, sort: {'bumped_on': -1}}})
       .then(populated_threads => {
         populated_threads.forEach(x => {x.reply_count = x.replies.length})
-        res.json(populated_threads)
+        // res.json(populated_threads)
       })
     })
     
