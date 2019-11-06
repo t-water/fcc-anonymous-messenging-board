@@ -1,3 +1,15 @@
+h1{
+  font-size: 3.5em;
+}
+
+h2{
+  font-size: 2.5em;
+}
+
+.thread-title{
+  text-decoration: underline;
+}
+
 .board-link{
   font-size: 2em;
 }
