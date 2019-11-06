@@ -19,8 +19,13 @@
       <div>
         <h3>Submit a new thread:</h3>
         <form id="newThread" method="post" action="/api/">
-          <textarea rows="8" cols="120" type='text' placeholder='Thread text...' name='text' required=''></textarea><br>
-          <input type='text' placeholder='password to delete' name='delete_password' required=''><br>
+          <div class="form-row mb-3">
+            <textarea class="form-control col-12" rows="8" type="text" placeholder="Thread text..." name="text" required></textarea>
+          </div>
+          <div class="form-row mb-3">
+            <label>Password to Delete Thread: </label>
+            <input class="form-control col-12 col-md-4 ml-0 ml-md-1" type="text" placeholder="password" name="delete_password" required>
+          </div>
           <div class="form-row">
             <button class="btn btn-success" type="submit">Submit</button>
           </div>
