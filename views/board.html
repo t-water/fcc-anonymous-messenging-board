@@ -42,8 +42,7 @@
           threads.forEach(x => {
             let thread = ''
             thread += '<div class="thread"><div class="main">';
-            thread += ('<h3>' + x.text + '</h3>')
-            thread += ('<form id="reportThread"><div class="form-row"><input type="hidden" name="report_id" value="'+x._id+'"><button type="submit" class="btn btn-warning">Report</button></div></form>')
+            thread += ('<form id="reportThread"><div class="form-row"><h3>' + x.text + '</h3><input type="hidden" name="report_id" value="'+x._id+'"><button type="submit" class="btn btn-warning">Report</button></div></form>')
             thread += ('<p class="id">id: ' + x._id + ' (' + x.created_on+')</p>');
             thread += ('<form id="deleteThread"><div class="form-row"><input type="hidden" value="' + x._id + '" name="thread_id" required><input class="form-control col-12 col-md-3" type="text" placeholder="delete thread password" name="delete_password" required><button type="submit" class="btn btn-danger">Delete</button></div></form>')
             thread += ('</div><div class="replies">')
