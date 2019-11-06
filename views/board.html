@@ -49,7 +49,7 @@
             thread += '<div class="thread"><div class="main">';
             thread += ('<form id="reportThread"><div class="form-row"><h3 class="col-10">' + x.text + '</h3><input type="hidden" name="report_id" value="'+x._id+'"><button type="submit" class="btn btn-warning col-12 col-sm-2">Report</button></div></form>')
             thread += ('<p class="id">id: ' + x._id + ' (' + x.created_on+')</p>');
-            thread += ('<form id="deleteThread"><div class="form-row"><input type="hidden" value="' + x._id + '" name="thread_id" required><input class="form-control col-12 col-md-3" type="text" placeholder="delete thread password" name="delete_password" required><button type="submit" class="btn btn-danger">Delete</button></div></form>')
+            thread += ('<form id="deleteThread"><div class="form-row mb-5"><input type="hidden" value="' + x._id + '" name="thread_id" required><input class="form-control col-12 col-md-3" type="text" placeholder="delete thread" name="delete_password" required><button type="submit" class="btn btn-danger">Delete</button></div></form>')
             thread += ('</div><div class="replies">')
             var hiddenCount = x.reply_count - 3;
             if (hiddenCount < 1) { hiddenCount = 0 }
@@ -66,7 +66,7 @@
             thread += ('<form action="/api/replies/'+currentBoard+'/" method="post" id="newReply">');
             thread += ('<input type="hidden" name="thread_id" value="'+x._id+'">');
             thread += ('<div class="form-row"><textarea class="form-control col-12" rows="5" type="text" placeholder="Quick reply..." name="text" required=""></textarea></div>');
-            thread += ('<div class="form-row"><label></label><input class="form-control" type="text" placeholder="password to delete" name="delete_password" required>');
+            thread += ('<div class="form-row"><label>Password To Delete Thread: </label><input class="form-control" type="text" placeholder="password to delete" name="delete_password" required>');
             thread += ('<div class="form-row"><button class="btn btn-success" type="submit">Submit</button>')
             thread += ('</div></form></div></div></div>')
             $('#board-display').append(thread)
