@@ -58,13 +58,24 @@ module.exports = function(app) {
   
   .put((req, res, next) => {
     let board = req.params.board;   
-    let id = req.body.thread_id;
+    let id = req.body.report_id;
     let Thread = mongoose.model(board, threadSchema, board)
     Thread.findByIdAndUpdate(id, {reported: true})
-    .then(data => {
-      res.send("Successfully Reported")
-    }, err => next(err))
-    .catch(err => next(err))
+    .then(thread => {
+      if(thread){
+              res.statusCode = 200;
+        res.setHeader('Content-type', 'application/json')
+        res.send("Successfully Reported")
+      }
+
+    }, err => {
+      res.statusCode = 500;
+      res.send('Could not report thread with id: ' + id)
+    })
+    .catch(err => {
+      res.statusCode = 500;
+      res.send('Could not report thread with id: ' + id)
+    })
   })
   
   .delete((req, res, next) => {
