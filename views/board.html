@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Anonymous Messenging App</title>
+    <title>Welcome to HyperDev!</title>
     <meta name="description" content="A cool thing made with HyperDev">
     <link id="favicon" rel="icon" href="https://hyperdev.com/favicon-app.ico" type="image/x-icon">
     <meta charset="utf-8">
@@ -18,7 +18,7 @@
       <h1 id="board-title" class="text-center"></h1>
       <div>
         <h3>Submit a new thread:</h3>
-        <form id="newThread" method="post" action="/api/">
+        <form id="new-thread" method="post" action="/api/">
           <div class="form-row mb-3">
             <textarea class="form-control col-12" rows="8" type="text" placeholder="Thread text..." name="text" required></textarea>
           </div>
@@ -45,6 +45,7 @@
         
         function displayThreads(threads){
           threads.forEach(x => {
+            console.log(x)
             let thread = ''
             thread += '<div class="thread px-2 px-md-5"><div class="main">';
             thread += ('<form id="report-thread"><div class="form-row"><h2 class="col-12 col-sm-10 col-md-11 thread-title">' + x.text + '</h2><input type="hidden" name="report_id" value="'+x._id+'"><button type="submit" class="btn btn-warning col-12 col-sm-2 col-md-1">Report</button></div></form>')
@@ -84,6 +85,17 @@
           }
         });
         
+        $('#new-thread').submit(function(e){
+          $.ajax({
+            url: "/api/threads/" + currentBoard,
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function(data){
+              
+            }
+          })
+        });
+        
         $('#board-display').on('submit', '#new-reply', function(e){
           $.ajax({
             url: "/api/replies/" + currentBoard,
@@ -96,11 +108,11 @@
           e.preventDefault();
         });
         
+        
         $('#board-display').on('submit','#report-thread', function(e) {
-          var url = "/api/threads/"+currentBoard;
           $.ajax({
             type: "PUT",
-            url: url,
+            url: "/api/threads/"+currentBoard,
             data: $(this).serialize(),
             success: function(data){
               alert(data)
@@ -108,21 +120,21 @@
           });
           e.preventDefault();
         });
+       
         $('#board-display').on('submit','#report-reply', function(e) {
-          var url = "/api/replies/"+currentBoard;
           $.ajax({
             type: "PUT",
-            url: url,
+            url: "/api/replies/"+currentBoard,
             data: $(this).serialize(),
             success: function(data) { alert(data) }
           });
           e.preventDefault();
         });
+        
         $('#board-display').on('submit','#delete-thread', function(e) {
-          var url = "/api/threads/"+currentBoard;
           $.ajax({
             type: "DELETE",
-            url: url,
+            url: "/api/threads/"+currentBoard,
             data: $(this).serialize(),
             success: function(data) {
               alert(data) 
@@ -131,11 +143,11 @@
           });
           e.preventDefault();
         });        
+        
         $('#board-display').on('submit','#delete-reply', function(e) {
-          var url = "/api/replies/"+currentBoard;
           $.ajax({
             type: "DELETE",
-            url: url,
+            url: "/api/replies/"+currentBoard,
             data: $(this).serialize(),
             success: function(data) {
               alert(data) 
