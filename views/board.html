@@ -65,9 +65,9 @@
             thread += ('<div class="newReply">')
             thread += ('<form action="/api/replies/'+currentBoard+'/" method="post" id="newReply">');
             thread += ('<input type="hidden" name="thread_id" value="'+x._id+'">');
-            thread += ('<div class="form-row"><textarea class="form-control col-12" rows="5" type="text" placeholder="Quick reply..." name="text" required=""></textarea></div>');
-            thread += ('<div class="form-row"><label>Password To Delete Thread: </label><input class="form-control" type="text" placeholder="password to delete" name="delete_password" required>');
-            thread += ('<div class="form-row"><button class="btn btn-success" type="submit">Submit</button>')
+            thread += ('<div class="form-row mb-3"><textarea class="form-control col-12" rows="5" type="text" placeholder="Quick reply..." name="text" required=""></textarea></div>');
+            thread += ('<div class="form-row mb-3"><label>Password To Delete Thread: </label><input class="form-control" type="text" placeholder="password to delete" name="delete_password" required></div>');
+            thread += ('<div class="form-row mb-3"><button class="btn btn-success" type="submit">Submit</button>')
             thread += ('</div></form></div></div></div>')
             $('#board-display').append(thread)
           })
