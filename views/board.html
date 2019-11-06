@@ -27,28 +27,34 @@
       </form>
     </div>
     
-    <div id='boardDisplay'></div>
+    <div id="board-display"></div>
     
     <script>
       $(function() {
         var currentBoard = window.location.pathname.slice(3,-1);
-        var url = "/api/threads/"+currentBoard;
         $('#boardTitle').text('Welcome to '+window.location.pathname)
+        
+        function displayThreads(threads){
+          threads.forEach(x => {
+            let thread = ''
+            thread += '<div class="thread"><div class="main">';
+            thread += ('<p class="id">id: ' + x._id + ' (' + x.created_on+')</p>')
+          })
+          
+        }
+        
         $.ajax({
           type: "GET",
-          url: url,
+          url: "/api/threads/"+currentBoard,
           success: function(data)
           {
             var boardThreads= [];
-            //
-            // THIS ARRAY SET UP IS FOR CODE READABILITIES AND TESTING!
-            // THIS IS NOT WHAT IT WOULD LOOK LIKE TO GO LIVE
-            //
+            
             data.forEach(function(ele) {
               console.log(ele);
-              var thread = ['<div class="thread">'];
-              thread.push('<div class="main">')
-              thread.push('<p class="id">id: '+ele._id+' ('+ele.created_on+')</p>');
+              // var thread = ['<div class="thread">'];
+              // thread.push('<div class="main">')
+              // thread.push('<p class="id">id: '+ele._id+' ('+ele.created_on+')</p>');
               thread.push('<form id="reportThread"><input type="hidden" name="report_id" value="'+ele._id+'"><input type="submit" value="Report"></form>');
               thread.push('<form id="deleteThread"><input type="hidden" value="'+ele._id+'" name="thread_id" required=""><input type="text" placeholder="password" name="delete_password" required=""><input type="submit" value="Delete"></form>');
               thread.push('<h3>'+ele.text+'</h3>');
@@ -72,7 +78,7 @@
               thread.push('</form></div></div></div>')
               boardThreads.push(thread.join(''));
             });
-            $('#boardDisplay').html(boardThreads.join(''));
+            $('#board-display').html(boardThreads.join(''));
           }
         });
         
