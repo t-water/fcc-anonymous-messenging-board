@@ -91,9 +91,10 @@
             type: 'POST',
             data: $(this).serialize(),
             success: function(data){
-              
+              location.reload();
             }
           })
+          e.preventDefault();
         });
         
         $('#board-display').on('submit', '#new-reply', function(e){
