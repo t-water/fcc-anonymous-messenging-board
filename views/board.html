@@ -47,7 +47,7 @@
           threads.forEach(x => {
             let thread = ''
             thread += '<div class="thread"><div class="main">';
-            thread += ('<form id="reportThread"><div class="form-row"><h3>' + x.text + '</h3><input type="hidden" name="report_id" value="'+x._id+'"><button type="submit" class="btn btn-warning">Report</button></div></form>')
+            thread += ('<form id="reportThread"><div class="form-row"><h3 class="col-10">' + x.text + '</h3><input type="hidden" name="report_id" value="'+x._id+'"><button type="submit" class="btn btn-warning col-12 col-sm-2">Report</button></div></form>')
             thread += ('<p class="id">id: ' + x._id + ' (' + x.created_on+')</p>');
             thread += ('<form id="deleteThread"><div class="form-row"><input type="hidden" value="' + x._id + '" name="thread_id" required><input class="form-control col-12 col-md-3" type="text" placeholder="delete thread password" name="delete_password" required><button type="submit" class="btn btn-danger">Delete</button></div></form>')
             thread += ('</div><div class="replies">')
@@ -65,9 +65,10 @@
             thread += ('<div class="newReply">')
             thread += ('<form action="/api/replies/'+currentBoard+'/" method="post" id="newReply">');
             thread += ('<input type="hidden" name="thread_id" value="'+x._id+'">');
-            thread += ('<textarea rows="5" cols="80" type="text" placeholder="Quick reply..." name="text" required=""></textarea><br>');
-            thread += ('<input type="text" placeholder="password to delete" name="delete_password" required=""><input type="submit" value="Submit">')
-            thread += ('</form></div></div></div>')
+            thread += ('<div class="form-row"><textarea class="form-control col-12" rows="5" type="text" placeholder="Quick reply..." name="text" required=""></textarea></div>');
+            thread += ('<div class="form-row"><label></label><input class="form-control" type="text" placeholder="password to delete" name="delete_password" required>');
+            thread += ('<div class="form-row"><button class="btn btn-success" type="submit">Submit</button>')
+            thread += ('</div></form></div></div></div>')
             $('#board-display').append(thread)
           })
           
