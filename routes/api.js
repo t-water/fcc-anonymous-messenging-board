@@ -94,6 +94,11 @@ module.exports = function(app) {
   app.route('/api/replies/:board')
   .get((req, res, next) => {
     let board = req.params.board;
+    let thread = mongoose.model(board, threadSchema, board)
+    let thread_id = req.body.thread_id
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'application/json')
+    res.json(board)
   })
   
   .post((req, res, next) => {
