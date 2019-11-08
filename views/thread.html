@@ -28,8 +28,7 @@
         $('title').text(window.location.pathname)
         $.ajax({
           type: "GET",
-          url: "/api/replies/"+currentURL[0],
-          data:{thread_id: currentURL[1]},
+          url: "/api/replies/"+currentURL[0] + '?thread_id=' + currentURL[1],
           success: function(ele)
           {
             var boardThreads= [];

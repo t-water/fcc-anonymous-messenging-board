@@ -23,7 +23,7 @@ module.exports = function(app) {
   
   app.route('/api/threads/:board')
   .get((req, res, next) => {
-    let board = req.params.board;
+    let board = req.params.board.toLowerCase();
     let Thread = mongoose.model(board, threadSchema, board);
     Thread.aggregate([{$limit: 10}, {$project: {delete_password: 0, reported: 0, 'replies.delete_password': 0}}, {$sort: {'bumped_on': -1}}])
     .then(aggregated_threads => {
@@ -34,7 +34,7 @@ module.exports = function(app) {
   })
   
   .post((req, res, next) => {
-    let board = req.params.board;
+    let board = req.params.board.toLowerCase();
     let Thread = mongoose.model(board, threadSchema, board);
     let newThread = new Thread(req.body)
     newThread.save()
@@ -53,7 +53,7 @@ module.exports = function(app) {
   })
   
   .put((req, res, next) => {
-    let board = req.params.board;   
+    let board = req.params.board.toLowerCase();   
     let id = req.body.report_id;
     let Thread = mongoose.model(board, threadSchema, board)
     Thread.findByIdAndUpdate(id, {reported: true})
@@ -72,7 +72,7 @@ module.exports = function(app) {
   })
   
   .delete((req, res, next) => {
-    let board = req.params.board;
+    let board = req.params.board.toLowerCase();
     let id = req.body.thread_id;
     let password = req.body.delete_password;
     let Thread = mongoose.model(board, threadSchema, board);
@@ -93,16 +93,31 @@ module.exports = function(app) {
     
   app.route('/api/replies/:board')
   .get((req, res, next) => {
-    let board = req.params.board;
-    let thread = mongoose.model(board, threadSchema, board)
-    let thread_id = req.body.thread_id
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json')
-    res.json(board)
+    let board = req.params.board.toLowerCase();
+    let Thread = mongoose.model(board, threadSchema, board)
+    let thread_id = mongoose.Types.ObjectId(req.query.thread_id)
+    Thread.findOne({_id: thread_id})
+    .then(thread => {
+      if(thread != null){
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json')
+        res.json(thread)
+      }else{
+        res.statusCode = 404;
+        res.send('Could not find thread: ' + thread_id + ' in board: ' + req.params.board)
+      }
+    }, err => {
+      res.statusCode = 500;
+      res.send('Could not find thread: ' + thread_id + ' in board: ' + req.params.board)
+    })
+    .catch(err => {
+      res.statusCode = 500;
+      res.send('Could not find thread: ' + thread_id + ' in board: ' + req.params.board)
+    })
   })
   
   .post((req, res, next) => {
-    let board = req.params.board;
+    let board = req.params.board.toLowerCase();
     let Thread = mongoose.model(board, threadSchema, board)
     let id = req.body.thread_id
     let text = req.body.text
@@ -139,7 +154,7 @@ module.exports = function(app) {
   })
  
   .put((req, res, next) => {
-    let board = req.params.board;
+    let board = req.params.board.toLowerCase();
     let thread_id = req.body.thread_id;
     let reply_id = req.body.reply_id;
     let Thread = mongoose.model(board, threadSchema, board);
@@ -156,7 +171,7 @@ module.exports = function(app) {
   })
   
   .delete((req, res, next) => {
-    let board = req.params.board;
+    let board = req.params.board.toLowerCase();
     let thread_id = req.body.thread_id;
     let reply_id = req.body.reply_id;
     let Thread = mongoose.model(board, threadSchema, board);
