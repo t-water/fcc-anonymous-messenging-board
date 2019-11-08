@@ -21,7 +21,30 @@
       <div id="boardDisplay">
         <div class="thread">
           <div class="main">
-            <p class="id">id: '+ele._id+' ('+ele.created_on+')</p>
+            <p class="id">*****id: '+ele._id+' ('+ele.created_on+')</p>
+            <form id="reportThread">
+              <input type="hidden" name="report_id" value="'+ele._id+'">
+              <button type="submit" class="btn btn-warning">*****Report*****</button>
+            </form>
+            <form id="deleteThread">
+              <input type="hidden" value="'+ele._id+'" name="thread_id" required="">
+              <input type="password" placeholder="password" name="delete_password" required>
+              <button type="submit" class="btn btn-danger">*****Delete*****</button>
+            </form>
+            <h3 id="thread-heading">****'+ele.text+'****</h3>
+          </div>
+          <div class="replies">
+            <div id="ajax-replies">
+              
+            </div>
+            <div class="newReply">
+              <form action="/api/replies/'+currentURL[0]+'/" method="post" id="newReply">
+                <input type="hidden" name="thread_id" value="'+ele._id+'">
+                <textarea rows="5" type="text" placeholder="Quick reply..." name="text" required></textarea>
+                <input type="text" placeholder="password to delete" name="delete_password" required="">
+                <button type="submit" class="btn btn-success">Submit</button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
@@ -35,17 +58,13 @@
     
         $('#threadTitle').text(window.location.pathname);
         $('title').text(window.location.pathname)
-        function displayReplies(data){
-          let reply = ''
-          reply += 
-          $('#boardDisplay').append(reply)
-        }
+        
         $.ajax({
           type: "GET",
           url: "/api/replies/"+currentURL[0] + '?thread_id=' + currentURL[1],
           success: function(data)
           {
-            displayReplies(data)
+            $
 //             var boardThreads= [];
             
 //               thread.push('<p class="id">id: '+ele._id+' ('+ele.created_on+')</p>');
