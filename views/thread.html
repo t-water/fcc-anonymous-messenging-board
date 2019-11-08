@@ -21,7 +21,7 @@
       <div id="boardDisplay">
         <div class="thread">
           <div class="main">
-            <p class="id"></p>
+            <p id="thread-information"></p>
             <form id="reportThread">
               <input type="hidden" id="report_id" name="report_id">
               <button type="submit" class="btn btn-warning">Report</button>
@@ -64,12 +64,21 @@
           url: "/api/replies/"+currentURL[0] + '?thread_id=' + currentURL[1],
           success: function(data)
           {
-            $('p.id').text('id: ' + data._id + ' (' + data.created_on + ')')
+            $('#thread-information').text('id: ' + data._id + ' (' + data.created_on + ')')
             $('#thread-heading').text(data.text)
             $('input[type="hidden"]').val(data._id)
-            data.replies.forEach(x => {
-              let reply = '<div class="reply">';
-              reply += '<p class="id"'
+            data.replies.forEach((x, i) => {
+              let reply = '<div id="reply-"' + i + '>';
+              reply += '<p></p>'
+              reply += '<form id="reportReply">'
+              reply += '<input type="hidden" name="thread_id"><input type="hidden" name="reply_id">';
+              reply += '<button type="submit" class="btn btn-warning">Report</button></form>';
+              reply += '<form id="deleteReply">';
+              reply += '<input type="hidden" name="thread_id"><input type="hidden" name="reply_id"><input type="password" placeholder="password" name="delete_password" required>'
+              reply += '<button type="submit" class="btn btn-danger">Delete</button></form>'
+              reply += '<p></p></div>'
+              $('#ajax-replies').append(reply)
+              
             })
 //               ele.replies.forEach(function(rep) {
 //                 thread.push('<div class="reply">')
