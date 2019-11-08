@@ -34,9 +34,7 @@
             <h3 id="thread-heading"></h3>
           </div>
           <div class="replies">
-            <div id="ajax-replies">
-              
-            </div>
+            <div id="ajax-replies"></div>
             <div class="newReply">
               <form method="post" id="newReply">
                 <input id="post_id" type="hidden" name="thread_id">
@@ -68,26 +66,21 @@
             $('#thread-heading').text(data.text)
             $('input[type="hidden"]').val(data._id)
             data.replies.forEach((x, i) => {
-              let reply = '<div id="reply-"' + i + '>';
-              reply += '<p></p>'
+              let reply = '<div id="reply-' + i + '">';
+              reply += '<p class="reply-id"></p>'
               reply += '<form id="reportReply">'
               reply += '<input type="hidden" name="thread_id"><input type="hidden" name="reply_id">';
               reply += '<button type="submit" class="btn btn-warning">Report</button></form>';
               reply += '<form id="deleteReply">';
               reply += '<input type="hidden" name="thread_id"><input type="hidden" name="reply_id"><input type="password" placeholder="password" name="delete_password" required>'
               reply += '<button type="submit" class="btn btn-danger">Delete</button></form>'
-              reply += '<p></p></div>'
+              reply += '<p class="reply-text"></p></div>'
               $('#ajax-replies').append(reply)
-              
+              $('#reply-' + i).find('.reply-id').text('id: ' + x._id + ' (' + x.created_on.replace(/T.+Z$/, '') + ')')
+              $('#reply-' + i).find('.reply-text').text(x.text)
+              $('#reply-' + i).find('input[name="thread_id"]').val(data._id)
+              $('#reply-' + i).find('input[name="reply_id"]').val(x._id)
             })
-//               ele.replies.forEach(function(rep) {
-//                 thread.push('<div class="reply">')
-//                 thread.push('<p class="id">id: '+rep._id+' ('+rep.created_on+')</p>');
-//                 thread.push('<form id="reportReply"><input type="hidden" name="thread_id" value="'+ele._id+'"><input type="hidden" name="reply_id" value="'+rep._id+'"><input type="submit" value="Report"></form>');
-//                 thread.push('<form id="deleteReply"><input type="hidden" value="'+ele._id+'" name="thread_id" required=""><input type="hidden" value="'+rep._id+'" name="reply_id" required=""><input type="text" placeholder="password" name="delete_password" required=""><input type="submit" value="Delete"></form>');
-//                 thread.push('<p>'+rep.text+'</p>');
-//                 thread.push('</div>')
-//               });
           }
         });
         
