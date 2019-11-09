@@ -55,7 +55,7 @@
           threads.forEach(x => {
             let thread = ''
             thread += '<div class="thread px-2 px-md-5"><div class="main">';
-            thread += ('<form id="report-thread"><div class="form-row mb-4"><h2 class="col-12 col-sm-10 col-md-11 thread-title">' + x.text + '</h2><input type="hidden" name="report_id" value="'+x._id+'"><button type="submit" class="btn btn-warning col-6 col-sm-2 col-md-1">Report Thread</button></div></form>')
+            thread += ('<form id="report-thread"><div class="form-row mb-4"><h2 class="col-12 col-sm-9 col-md-10 thread-title">' + x.text + '</h2><input type="hidden" name="report_id" value="'+x._id+'"><button type="submit" class="btn btn-warning col-6 col-sm-3 col-md-2">Report Thread</button></div></form>')
             thread += ('<form id="delete-thread"><div class="form-row mb-5"><input type="hidden" value="' + x._id + '" name="thread_id" required><input class="form-control col-12 col-md-3" type="password" placeholder="delete thread" name="delete_password" required><button type="submit" class="btn btn-danger">Delete</button></div></form>')
             thread += ('</div><div class="replies">')
             var hiddenCount = x.reply_count - 3;
@@ -64,9 +64,9 @@
             thread += ('<h5><strong>'+x.reply_count+ replyTotal + '('+hiddenCount+' hidden)- </strong><a href="'+window.location.pathname+x._id+'">See the full thread here</a>.</h5>')
             x.replies.forEach(reply => {
               thread += ('<div class="reply">')
-              thread += ('<form class="report-reply"><div class="form-row mb-4"><h3 class="col-12 col-sm-10 col-md-11">-'+reply.text+'</h3><button type="submit" class="btn btn-warning col-6 col-sm-3">Report Reply</button>')
+              thread += ('<form class="report-reply"><div class="form-row mb-2"><h3 class="col-12 col-sm-10 col-md-11">-'+reply.text+'</h3><button type="submit" class="btn btn-warning col-6 col-sm-3 col-md-2">Report Reply</button>')
               thread += ('<input type="hidden" name="thread_id" value="'+x._id+'"><input type="hidden" name="reply_id" value="'+reply._id+'"></div></form>');
-              thread += ('<form class="delete-reply" class="mb-3 mb-sm-4"><input type="hidden" value="'+x._id+'" name="thread_id" required=""><input type="hidden" value="'+reply._id+'" name="reply_id" required=""><div class="form-row"><input class="form-control col-12 col-md-4" type="password" placeholder="password" name="delete_password" required=""><button type="submit" class="btn btn-danger">Delete Reply</button></div></form>');
+              thread += ('<form class="delete-reply" class="mb-3 mb-sm-4"><input type="hidden" value="'+x._id+'" name="thread_id" required=""><input type="hidden" value="'+reply._id+'" name="reply_id" required=""><div class="form-row mb-4"><input class="form-control col-12 col-md-4" type="password" placeholder="password" name="delete_password" required=""><button type="submit" class="btn btn-danger">Delete Reply</button></div></form>');
               thread += ('</div>')
             })
             thread += ('<div class="newReply mt-5">')

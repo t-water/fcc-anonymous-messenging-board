@@ -45,9 +45,15 @@
             <div class="newReply">
               <form method="post" id="newReply">
                 <input id="post_id" type="hidden" name="thread_id">
-                <textarea class="form-control col-12" rows="5" type="text" placeholder="Quick reply..." name="text" required></textarea>
-                <input class="form-control" type="password" placeholder="password to delete" name="delete_password" required>
-                <button type="submit" class="btn btn-success">Submit</button>
+                <div class="form-row mb-3">
+                  <textarea class="form-control col-12" rows="5" type="text" placeholder="Quick reply..." name="text" required></textarea>
+                </div>
+                <div class="form-row mb-3">
+                  <input class="form-control" type="password" placeholder="password to delete" name="delete_password" required>
+                </div>
+                <div class="form-row mb-3">
+                  <button type="submit" class="btn btn-success">Submit</button>
+                </div>
               </form>
             </div>
           </div>
