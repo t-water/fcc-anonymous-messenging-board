@@ -25,15 +25,25 @@
         <form method="post" id="new-thread">
           <div class="form-row mb-3">
             <label for="new-thread-board">Board: </label>
-            <input class="form-control" type="text" placeholder="Board" id="new-thread-board" name="board" required>
+            <div class="input-group">
+              <input class="form-control" type="text" placeholder="Board" id="new-thread-board" name="board" required>
+              <div class="invalid-feedback"></div>
+            </div>
+            
           </div>
           <div class="form-row mb-3">
             <label for="new-thread-text">Text: </label>
-            <textarea class="form-control" id="new-thread-text" type="text" placeholder="Thread text..." name="text" required></textarea>
+            <div class="input-group">
+              <textarea class="form-control" id="new-thread-text" type="text" placeholder="Thread text..." name="text" required></textarea>
+              <div class="invalid-feedback"></div>
+            </div>
           </div>
           <div class="form-row mb-3">
             <label for="new-thread-password">Password To Delete Thread: </label>
-            <input id="new-thread-password" class="form-control" type="password" placeholder="password to delete" name="delete_password" required>
+            <div class="input-group">
+              <input id="new-thread-password" class="form-control" type="password" placeholder="password to delete" name="delete_password" required>
+              <div class="invalid-feedback"></div>
+            </div>
           </div>
           <div class="form-row">
             <button class="btn btn-success" type="submit">Submit</button>
@@ -41,55 +51,18 @@
           
         </form>
     </div>
-<!--     <div id='testui'>
-      <h2 style="text-align: left">API Tests:</h2> -->
-
-<!--         <hr>
-        <h4>Report thread (PUT /api/threads/:board)</h4>
-        <form id="reportThread">
-          <input type='text' placeholder='board' id='board2' name='board' required=''><br>
-          <input type='text' placeholder='id to report' name='thread_id' required=''><br>
-          <input type="submit" value="Submit">
-        </form>
-        <hr>
-        <h4>Delete thread (DELETE /api/threads/:board)</h4>
-        <form id="deleteThread">
-          <input type='text' placeholder='board' id='board3' name='board' required=''><br>
-          <input type='text' placeholder='id to delete' name='thread_id' required=''><br>
-          <input type='text' placeholder='password' name='delete_password' required=''><br>
-          <input type="submit" value="Submit">
-        </form>
-        <hr>
-        
-        
-        <h4>New reply (POST /api/replies/:board)</h4>
-        <form action="/api/threads/test" method="post" id="newReply">
-          <input type='text' placeholder='board' id='board4' name='board' required=''><br>
-          <input type='text' placeholder='thread id' name='thread_id' required=''><br>
-          <textarea type='text' placeholder='Thread text...' name='text' required=''></textarea><br>
-          <input type='text' placeholder='password to delete' name='delete_password' required=''><br>
-          <input type="submit" value="Submit">
-        </form>
-        <hr>
-        <h4>Report reply (PUT /api/replies/:board)</h4>
-        <form id="reportReply">
-          <input type='text' placeholder='board' id='board5' name='board' required=''><br>
-          <input type='text' placeholder='thread id' name='thread_id' required=''><br>
-          <input type='text' placeholder='id to report' name='reply_id' required=''><br>
-          <input type="submit" value="Submit">
-        </form>
-        <hr>
-        <h4>Delete reply (DELETE /api/replies/:board)</h4>
-        <form id="deleteReply">
-          <input type='text' placeholder='board' id='board6' name='board' required=''><br>
-          <input type='text' placeholder='thread id' name='thread_id' required=''><br>
-          <input type='text' placeholder='id to delete' name='reply_id' required=''><br>
-          <input type='text' placeholder='password' name='delete_password' required=''><br>
-          <input type="submit" value="Submit">
-        </form>         -->
-<!--     </div> -->
+    
     <script>
       $(function() {
+        $('input').on('input', function(){
+          if($(this).val() == ''){
+            $(this).addClass('is-invalid').removeClass('is-valid')
+            $(this).siblings('.invalid-feedback').text('Input must not be blank')
+          }else{
+            $(this).addClass('is-valid').removeClass('is-invalid')
+            $(this).siblings('.invalid-feedback').text('')
+          }
+        })
         $.ajax({
           url: '/api/threads',
           success: function(data){
@@ -100,63 +73,17 @@
         })
         $('#new-thread').submit(function(){
           var board = $('#new-thread-board').val();
-          $(this).attr('action', "/api/threads/" + board);
-        });
-        $('#newReply').submit(function(){
-          var board = $('#board4').val();
-          $(this).attr('action', "/api/replies/" + board);
-        });
-        $('#reportThread').submit(function(e){
-          var url = "/api/threads/"+$('#board2').val();
           $.ajax({
-            type: "PUT",
-            url: url,
-            data: $(this).serialize(),
-            success: function(data)
-            {
-              alert(data);
+            url: '/api/threads/' + board,
+            type: 'POST',
+            data: $('#new-thread').serialize(),
+            success: function(data){
+              window.location.href = '/b/' + board + '/'
+            },
+            error: function(request, status, error){
+              alert(request.responseText)
             }
-          });
-          e.preventDefault();
-        });
-        $('#deleteThread').submit(function(e){
-          var url = "/api/threads/"+$('#board3').val();
-          $.ajax({
-            type: "DELETE",
-            url: url,
-            data: $(this).serialize(),
-            success: function(data)
-            {
-              alert(data);
-            }
-          });
-          e.preventDefault();
-        });
-        $('#reportReply').submit(function(e){
-          var url = "/api/replies/"+$('#board5').val();
-          $.ajax({
-            type: "PUT",
-            url: url,
-            data: $(this).serialize(),
-            success: function(data)
-            {
-              alert(data);
-            }
-          });
-          e.preventDefault();
-        });
-        $('#deleteReply').submit(function(e){
-          var url = "/api/replies/"+$('#board6').val();
-          $.ajax({
-            type: "DELETE",
-            url: url,
-            data: $(this).serialize(),
-            success: function(data)
-            {
-              alert(data);
-            }
-          });
-          e.preventDefault();
+          })
         });
       });
    </script>
