@@ -41,11 +41,13 @@
     <script>
       $(function() {
         var currentBoard = window.location.pathname.slice(3,-1);
+        if(!/\/$/.test(window.location.pathname)){
+          window.location.href = window.location.pathname + '/'
+        }
         $('#board-title').text('Welcome to '+window.location.pathname)
         
         function displayThreads(threads){
           threads.forEach(x => {
-            console.log(x)
             let thread = ''
             thread += '<div class="thread px-2 px-md-5"><div class="main">';
             thread += ('<form id="report-thread"><div class="form-row"><h2 class="col-12 col-sm-10 col-md-11 thread-title">' + x.text + '</h2><input type="hidden" name="report_id" value="'+x._id+'"><button type="submit" class="btn btn-warning col-12 col-sm-2 col-md-1">Report</button></div></form>')
