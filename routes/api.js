@@ -25,7 +25,29 @@ module.exports = function(app) {
   .get((req, res, next) => {
     let board = req.params.board.toLowerCase();
     let Thread = mongoose.model(board, threadSchema, board);
-    Thread.aggregate([{$limit: 10}, {$project: {delete_password: 0, reported: 0, 'replies.delete_password': 0}}, {$sort: {'bumped_on': -1, 'replies.created_on': 1}}])
+    Thread.aggregate([
+      {
+        $limit: 10
+      }, 
+      {
+        $project: {delete_password: 0, reported: 0, 'replies.delete_password': 0}
+      }, 
+      {
+        $sort: {'bumped_on': -1}
+      }, 
+      {
+        "$unwind": '$replies'
+      },
+      {
+        $sort: {'replies.created_on': 1}
+      },
+      {
+        '$group': {
+          '_id': '$_id',
+          'replies': {'$push': '$replies'}
+        }
+      }
+    ])
     .then(aggregated_threads => {
       aggregated_threads.forEach(x => {
         x.reply_count = x.replies.length
