@@ -134,7 +134,7 @@
           });
           e.preventDefault();
         });
-        $('#board-display').on('submit','#deleteThread', function(e) {
+        $('#board-display').on('submit','#delete-thread', function(e) {
           var url = "/api/threads/"+currentURL[0];
           $.ajax({
             type: "DELETE",
