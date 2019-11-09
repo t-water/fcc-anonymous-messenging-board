@@ -17,7 +17,7 @@
   <body>
     
     <div class = "container-fluid">
-      <h2 id="threadTitle"></h2>
+      <h2 id="threadTitle" class="text-center"></h2>
       <p class="text-center"><a href="https://foremost-catboat.glitch.me/">Return Home</a></p>
       <p class="text-center"><a id = "return-to-board" href=""></a></p>
       <div id="board-display">
@@ -95,7 +95,7 @@
               reply += '<h3 class="reply-text"></h3>'
               reply += '<button type="submit" class="btn btn-link col-6 col-sm-3 col-md-2">Report Reply</button></div></form>';
               reply += '<form class="delete-reply">';
-              reply += '<input type="hidden" name="thread_id"><div class="form-row mb-3"><input type="hidden" name="reply_id"><input class="form-control col-12 col-md-6 col-lg-3" type="password" placeholder="password" name="delete_password" required>'
+              reply += '<input type="hidden" name="thread_id"><div class="form-row mb-5"><input type="hidden" name="reply_id"><input class="form-control col-12 col-md-6 col-lg-3" type="password" placeholder="password" name="delete_password" required>'
               reply += '<button type="submit" class="btn btn-outline-danger col-6 col-md-3 col-lg-2 ml-lg-1">Delete Reply</button></div></form>'
               $('#ajax-replies').append(reply)
               $('#reply-' + i).find('.reply-id').text('id: ' + x._id + ' (' + x.created_on.replace(/T.+Z$/, '') + ')')

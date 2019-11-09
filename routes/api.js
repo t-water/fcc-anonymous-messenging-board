@@ -34,18 +34,6 @@ module.exports = function(app) {
       },
       {
         $sort: {'bumped_on': -1}
-      }, 
-      {
-        "$unwind": '$replies'
-      },
-      {
-        $sort: {'replies.created_on': -1}
-      },
-      {
-        '$group': {
-         
-          'replies': {'$push': '$replies'}
-        }
       }
     ])
     .then(aggregated_threads => {
