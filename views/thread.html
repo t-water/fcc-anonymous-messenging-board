@@ -19,14 +19,14 @@
     <div class = "container-fluid">
       <h2 id="threadTitle"></h2>
       <p class="text-center"><a href="https://foremost-catboat.glitch.me/">Return Home</a></p>
-      <div id="boardDisplay">
+      <div id="board-display">
         <div class="thread">
           <div class="main">
-            <form id="reportThread">
+            <form id="report-thread">
               <div class="form-row mb-2">
-                <h2 id="thread-heading"></h2>
                 <input type="hidden" id="report_id" name="report_id">
-                <button type="submit" class="btn btn-warning ml-3">Report Thread</button>
+                <h2 id="thread-heading" class=""></h2>
+                <button type="submit" class="btn btn-link">Report Thread</button>
               </div>
             </form>
             <p id="thread-information"></p>
@@ -71,6 +71,11 @@
         $('#threadTitle').text(window.location.pathname.toLowerCase());
         $('title').text(window.location.pathname.toLowerCase())
         
+        $('#report-thread-anchor').click(function(e){
+          e.preventDefault()
+          $('#report-thread').submit()
+        })
+        
         $.ajax({
           type: "GET",
           url: "/api/replies/"+currentURL[0] + '?thread_id=' + currentURL[1],
@@ -108,17 +113,16 @@
         });
         
         
-        $('#boardDisplay').on('submit','#reportThread', function(e) {
-          var url = "/api/threads/"+currentURL[0];
+        $('#board-display').on('submit','#report-thread', function(e) {
           $.ajax({
             type: "PUT",
-            url: url,
+            url: "/api/threads/"+currentURL[0],
             data: $(this).serialize(),
             success: function(data) { alert(data) }
           });
           e.preventDefault();
         });
-        $('#boardDisplay').on('submit','.report-reply', function(e) {
+        $('#board-display').on('submit','.report-reply', function(e) {
           var url = "/api/replies/"+currentURL[0];
           $.ajax({
             type: "PUT",
@@ -128,7 +132,7 @@
           });
           e.preventDefault();
         });
-        $('#boardDisplay').on('submit','#deleteThread', function(e) {
+        $('#board-display').on('submit','#deleteThread', function(e) {
           var url = "/api/threads/"+currentURL[0];
           $.ajax({
             type: "DELETE",
@@ -138,7 +142,7 @@
           });
           e.preventDefault();
         });        
-        $('#boardDisplay').on('submit','#delete-reply', function(e) {
+        $('#board-display').on('submit','#delete-reply', function(e) {
           var url = "/api/replies/"+currentURL[0];
           $.ajax({
             type: "DELETE",
