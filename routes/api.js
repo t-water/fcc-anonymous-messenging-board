@@ -30,7 +30,7 @@ module.exports = function(app) {
         $limit: 10
       },
       {
-        $project: {delete_password: 0, reported: 0, 'replies.delete_password': 0}
+        $project: {delete_password: 0, 'replies.delete_password': 0}
       },
       {
         $sort: {'bumped_on': -1}
@@ -78,19 +78,35 @@ module.exports = function(app) {
     let board = req.params.board.toLowerCase();   
     let id = req.body.report_id;
     let Thread = mongoose.model(board, threadSchema, board)
-    Thread.findByIdAndUpdate(id, {reported: true})
-    .then(thread => {
+    Thread.findOne({_id: id})
+    .then(foundThread => {
+      if(foundThread.reported){
         res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/text')
-        res.send("Successfully Reported")
+        res.send('Thread has already been reported.')
+      }else{
+        Thread.findByIdAndUpdate(id, {reported: true})
+        .then(threadToReport => {
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/text')
+            res.send("Successfully Reported")
+        }, err => {
+          res.statusCode = 500;
+          res.send('Could not report thread with id: ' + id)
+        })
+        .catch(err => {
+          res.statusCode = 500;
+          res.send('Could not report thread with id: ' + id)
+        })
+      }
     }, err => {
       res.statusCode = 500;
-      res.send('Could not report thread with id: ' + id)
+      res.send('Could not find thread with id: ' + id)
     })
     .catch(err => {
       res.statusCode = 500;
-      res.send('Could not report thread with id: ' + id)
+      res.send('Could not find thread with id: ' + id)
     })
+
   })
   
   .delete((req, res, next) => {

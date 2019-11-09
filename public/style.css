@@ -1,8 +1,4 @@
-h1{
-  font-size: 5vw;
-}
-
-h2{
+h1, h2{
   font-size: 3vw;
 }
 
@@ -19,14 +15,10 @@ h3{
 }
 
 @media (max-width: 768px){
-  h1{
+  h1, h2{
   font-size: 9vw;
   }
-
-  h2{
-    font-size: 7vw;
-  }
-
+  
   h3{
     font-size: 7vw;
   }
