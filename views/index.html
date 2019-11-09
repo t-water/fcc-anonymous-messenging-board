@@ -17,6 +17,7 @@
   <body>
     <div class="container-fluid">
       <h1 class="text-center">Anonymous Messenging Board</h1>
+      <p id="error-message" class="text-danger d-none"></p>
       <div id="board-links">
         <h2>Select a Board or Create a New One</h2>
       </div>
@@ -45,7 +46,7 @@
               <div class="invalid-feedback"></div>
             </div>
           </div>
-          <div class="form-row">
+          <div class="form-row mb-3">
             <button class="btn btn-success" type="submit">Submit</button>
           </div>
         </form>
@@ -71,26 +72,25 @@
           }
         })
         $('#new-thread').submit(function(e){
-          console.log()
-          // if($('input, textarea').toArray().every(x => {
-          //   x.classList.contains('is-valid')
-          // })){
-          //   console.log('valid')
-          // }else{
-          //   console.log('invalid')
-          // }
-          // var board = $('#new-thread-board').val();
-          // $.ajax({
-          //   url: '/api/threads/' + board,
-          //   type: 'POST',
-          //   data: $('#new-thread').serialize(),
-          //   success: function(data){
-          //     window.location.href = '/b/' + board + '/'
-          //   },
-          //   error: function(request, status, error){
-          //     alert(request.responseText)
-          //   }
-          // })
+          if($('input, textarea').toArray().every(x => {
+            return x.classList.contains('form-control')
+          })){
+            var board = $('#new-thread-board').val();
+            $.ajax({
+              url: '/api/threads/' + board,
+              type: 'POST',
+              data: $('#new-thread').serialize(),
+              success: function(data){
+                window.location.href = '/b/' + board + '/'
+              },
+              error: function(request, status, error){
+                alert(request.responseText)
+              }
+            })
+          }else{
+            $('#error-message').text('Form fields must not be left blank')
+            $('#error-message').removeClass('d-none')
+          }
           e.preventDefault()
         });
       });
