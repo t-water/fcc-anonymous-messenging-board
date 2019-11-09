@@ -25,9 +25,12 @@ module.exports = function(app) {
   .get((req, res, next) => {
     let board = req.params.board.toLowerCase();
     let Thread = mongoose.model(board, threadSchema, board);
-    Thread.aggregate([{$limit: 10}, {$project: {delete_password: 0, reported: 0, 'replies.delete_password': 0, nReplies: {$slice: ['replies', 3]}}}, {$sort: {'bumped_on': -1}}])
+    Thread.aggregate([{$limit: 10}, {$project: {delete_password: 0, reported: 0, 'replies.delete_password': 0}}, {$sort: {'bumped_on': -1, 'replies.created_on': 1}}])
     .then(aggregated_threads => {
-      aggregated_threads.forEach(x => x.reply_count = x.replies.length)
+      aggregated_threads.forEach(x => {
+        x.reply_count = x.replies.length
+        x.replies = x.replies.slice(0,3)
+      })
       res.json(aggregated_threads)
     })
     
