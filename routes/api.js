@@ -34,7 +34,7 @@ module.exports = function(app) {
   })
   
   .post((req, res, next) => {
-    let board = req.params.board.toLowerCase();
+    let board = req.params.board.toLowerCase().trim();
     let Thread = mongoose.model(board, threadSchema, board);
     let newThread = new Thread(req.body)
     newThread.save()

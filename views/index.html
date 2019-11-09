@@ -22,7 +22,7 @@
       </div>
       
       <h2>New thread</h2>
-        <form method="post" id="new-thread">
+        <form id="new-thread">
           <div class="form-row mb-3">
             <label for="new-thread-board">Board: </label>
             <div class="input-group">
@@ -48,13 +48,12 @@
           <div class="form-row">
             <button class="btn btn-success" type="submit">Submit</button>
           </div>
-          
         </form>
     </div>
     
     <script>
       $(function() {
-        $('input').on('input', function(){
+        $('input, textarea').on('input', function(){
           if($(this).val() == ''){
             $(this).addClass('is-invalid').removeClass('is-valid')
             $(this).siblings('.invalid-feedback').text('Input must not be blank')
@@ -71,19 +70,28 @@
             })
           }
         })
-        $('#new-thread').submit(function(){
-          var board = $('#new-thread-board').val();
-          $.ajax({
-            url: '/api/threads/' + board,
-            type: 'POST',
-            data: $('#new-thread').serialize(),
-            success: function(data){
-              window.location.href = '/b/' + board + '/'
-            },
-            error: function(request, status, error){
-              alert(request.responseText)
-            }
-          })
+        $('#new-thread').submit(function(e){
+          console.log()
+          // if($('input, textarea').toArray().every(x => {
+          //   x.classList.contains('is-valid')
+          // })){
+          //   console.log('valid')
+          // }else{
+          //   console.log('invalid')
+          // }
+          // var board = $('#new-thread-board').val();
+          // $.ajax({
+          //   url: '/api/threads/' + board,
+          //   type: 'POST',
+          //   data: $('#new-thread').serialize(),
+          //   success: function(data){
+          //     window.location.href = '/b/' + board + '/'
+          //   },
+          //   error: function(request, status, error){
+          //     alert(request.responseText)
+          //   }
+          // })
+          e.preventDefault()
         });
       });
    </script>
