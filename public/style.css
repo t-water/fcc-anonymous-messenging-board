@@ -1,16 +1,37 @@
 h1{
-  font-size: vw;
-/*   font-size: 3.5em; */
+  font-size: 6vw;
 }
 
 h2{
-  font-size: 2.5em;
+  font-size: 4vw;
+}
+
+h3{
+  font-size: 3vw;
+}
+
+.board-link{
+  font-size: 3vw;
 }
 
 .thread-title{
   text-decoration: underline;
 }
 
-.board-link{
-  font-size: 2em;
+@media (max-width: 768px){
+  h1{
+  font-size: 10vw;
+  }
+
+  h2{
+    font-size: 8vw;
+  }
+
+  h3{
+    font-size: 6vw;
+  }
+
+  .board-link{
+    font-size: 6vw;
+  }
 }
