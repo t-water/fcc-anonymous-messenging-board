@@ -22,20 +22,20 @@
       <div id="boardDisplay">
         <div class="thread">
           <div class="main">
-            <h2 id="thread-heading"></h2>
             <form id="reportThread">
-              <div class="form-row mb-3">
-                <p id="thread-information"></p>
+              <div class="form-row mb-2">
+                <h2 id="thread-heading"></h2>
                 <input type="hidden" id="report_id" name="report_id">
-                <button type="submit" class="btn btn-warning">Report Thread</button>
+                <button type="submit" class="btn btn-warning ml-3">Report Thread</button>
               </div>
             </form>
+            <p id="thread-information"></p>
             <form id="deleteThread">
-              <div class="form-row mb-3">
+              <div class="form-row mb-2">
                 <input id="delete_id" type="hidden" name="thread_id" required>
                 <input class="form-control" type="password" placeholder="password" name="delete_password" required>
               </div>
-              <div class="form-row mb-3">
+              <div class="form-row mb-5">
                 <button type="submit" class="btn btn-danger">Delete Thread</button>
               </div>
             </form>
@@ -43,6 +43,7 @@
           <div class="replies">
             <div id="ajax-replies"></div>
             <div class="newReply mt-5">
+              <h2>Create a New Reply</h2>
               <form method="post" id="newReply">
                 <input id="post_id" type="hidden" name="thread_id">
                 <div class="form-row mb-3">
@@ -80,13 +81,14 @@
             $('input[type="hidden"]').val(data._id)
             data.replies.forEach((x, i) => {
               let reply = '<div id="reply-' + i + '">';
+              reply += '<h3 class="reply-text"></h3>'
               reply += '<p class="reply-id"></p>'
               reply += '<form class="report-reply">'
-              reply += '<div class="form-row"><h3 class="reply-text col-12 col-sm-9 col-md-10"></h3>'
+              reply += '<div class="form-row mb-2">'
               reply += '<input type="hidden" name="thread_id"><input type="hidden" name="reply_id">';
               reply += '<button type="submit" class="btn btn-warning col-6 col-sm-3 col-md-2">Report Reply</button></div></form>';
               reply += '<form class="delete-reply">';
-              reply += '<input type="hidden" name="thread_id"><div class="form-row"><input type="hidden" name="reply_id"><input class="form-control col-12 col-md-6 col-lg-3" type="password" placeholder="password" name="delete_password" required>'
+              reply += '<input type="hidden" name="thread_id"><div class="form-row mb-3"><input type="hidden" name="reply_id"><input class="form-control col-12 col-md-6 col-lg-3" type="password" placeholder="password" name="delete_password" required>'
               reply += '<button type="submit" class="btn btn-danger col-6 col-md-3 col-lg-2 ml-lg-1">Delete Reply</button></div></form>'
               $('#ajax-replies').append(reply)
               $('#reply-' + i).find('.reply-id').text('id: ' + x._id + ' (' + x.created_on.replace(/T.+Z$/, '') + ')')
