@@ -17,6 +17,7 @@
     <div class="container-fluid">
       <h1 id="board-title" class="text-center"></h1>
       <div>
+        <p id="thread-error" class="text-center text-danger"></p>
         <h3>Submit a new thread:</h3>
         <form id="new-thread" method="post" action="/api/">
           <div class="form-row mb-3">
@@ -45,6 +46,8 @@
           window.location.href = window.location.pathname + '/'
         }
         $('#board-title').text('Welcome to '+window.location.pathname)
+        $('#thread-error').text(sessionStorage.getItem('thread-error'))
+        sessionStorage.removeItem('thread-error')
         
         function displayThreads(threads){
           threads.forEach(x => {

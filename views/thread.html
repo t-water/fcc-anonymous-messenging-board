@@ -68,10 +68,10 @@
             data.replies.forEach((x, i) => {
               let reply = '<div id="reply-' + i + '">';
               reply += '<p class="reply-id"></p>'
-              reply += '<form id="reportReply">'
+              reply += '<form class="report-reply">'
               reply += '<input type="hidden" name="thread_id"><input type="hidden" name="reply_id">';
               reply += '<button type="submit" class="btn btn-warning">Report</button></form>';
-              reply += '<form id="deleteReply">';
+              reply += '<form class="delete-reply">';
               reply += '<input type="hidden" name="thread_id"><input type="hidden" name="reply_id"><input type="password" placeholder="password" name="delete_password" required>'
               reply += '<button type="submit" class="btn btn-danger">Delete</button></form>'
               reply += '<p class="reply-text"></p></div>'
@@ -83,7 +83,7 @@
             })
           },
           error: function(request, status, error){
-            alert('Thread with id: ' + currentURL[1] + ' does not exist')
+            sessionStorage.setItem('thread-error', 'Thread with id: ' + currentURL[1] + ' does not exist')
             window.location.href = '/b/' + currentURL[0] + '/'
           }
         });
@@ -103,7 +103,7 @@
           });
           e.preventDefault();
         });
-        $('#boardDisplay').on('submit','#reportReply', function(e) {
+        $('#boardDisplay').on('submit','.report-reply', function(e) {
           var url = "/api/replies/"+currentURL[0];
           $.ajax({
             type: "PUT",
@@ -123,7 +123,7 @@
           });
           e.preventDefault();
         });        
-        $('#boardDisplay').on('submit','#deleteReply', function(e) {
+        $('#boardDisplay').on('submit','#delete-reply', function(e) {
           var url = "/api/replies/"+currentURL[0];
           $.ajax({
             type: "DELETE",
