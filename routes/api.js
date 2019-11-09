@@ -39,6 +39,15 @@ module.exports = function(app) {
     .then(aggregated_threads => {
       aggregated_threads.forEach(x => {
         x.reply_count = x.replies.length
+        x.replies = x.replies.sort((a,b) => {
+          if(a.created_on < b.created_on){
+            return 1;
+          }else if(a.created_on > b.created_on){
+            return -1;
+          }else{
+            return 0
+          }
+        })
         x.replies = x.replies.slice(0,3)
       })
       res.json(aggregated_threads)
