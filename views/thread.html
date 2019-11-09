@@ -22,15 +22,21 @@
       <div id="boardDisplay">
         <div class="thread">
           <div class="main">
-            <p id="thread-information"></p>
             <form id="reportThread">
-              <input type="hidden" id="report_id" name="report_id">
-              <button type="submit" class="btn btn-warning">Report</button>
+              <div class="form-row mb-3">
+                <p id="thread-information"></p>
+                <input type="hidden" id="report_id" name="report_id">
+                <button type="submit" class="btn btn-warning">Report Thread</button>
+              </div>
             </form>
             <form id="deleteThread">
-              <input id="delete_id" type="hidden" name="thread_id" required>
-              <input class="form-control" type="password" placeholder="password" name="delete_password" required>
-              <button type="submit" class="btn btn-danger">Delete</button>
+              <div class="form-row mb-3">
+                <input id="delete_id" type="hidden" name="thread_id" required>
+                <input class="form-control" type="password" placeholder="password" name="delete_password" required>
+              </div>
+              <div class="form-row mb-3">
+                <button type="submit" class="btn btn-danger">Delete Thread</button>
+              </div>
             </form>
             <h3 id="thread-heading"></h3>
           </div>
@@ -63,7 +69,7 @@
           url: "/api/replies/"+currentURL[0] + '?thread_id=' + currentURL[1],
           success: function(data)
           {
-            $('#thread-information').text('id: ' + data._id + ' (' + data.created_on + ')')
+            $('#thread-information').text('id: ' + data._id + ' (' + data.created_on.replace(/T.+Z/, '') + ')')
             $('#thread-heading').text(data.text)
             $('input[type="hidden"]').val(data._id)
             data.replies.forEach((x, i) => {
