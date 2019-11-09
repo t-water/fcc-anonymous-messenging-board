@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title>Welcome to HyperDev!</title>
-    <meta name="description" content="A cool thing made with HyperDev">
+    <meta name="description" content="Anonymous messenging board made with node.js and mongo db">
+    <meta name="keywords" content="Anonymous, messenging, board, forums, post, chat">
     <link id="favicon" rel="icon" href="https://hyperdev.com/favicon-app.ico" type="image/x-icon">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,6 +17,7 @@
   <body>
     <div class="container-fluid">
       <h1 id="board-title" class="text-center"></h1>
+      <p class="text-center"><a href="https://foremost-catboat.glitch.me/">Return Home</a></p>
       <div>
         <p id="thread-error" class="text-center text-danger"></p>
         <h3>Submit a new thread:</h3>
@@ -63,10 +65,10 @@
             thread += ('<h5><strong>'+x.reply_count+ replyTotal + '('+hiddenCount+' hidden)- </strong><a href="'+window.location.pathname+x._id+'">See the full thread here</a>.</h5>')
             x.replies.forEach(reply => {
               thread += ('<div class="reply">')
-              thread += ('<form id="report-reply"><div class="form-row"><h3 class="col-12 col-sm-10 col-md-11">-'+reply.text+'</h3><button type="submit" class="btn btn-warning col-12 col-sm-2 col-md-1 col-sm-2">Report</button>')
+              thread += ('<form class="report-reply"><div class="form-row"><h3 class="col-12 col-sm-10 col-md-11">-'+reply.text+'</h3><button type="submit" class="btn btn-warning col-12 col-sm-2 col-md-1 col-sm-2">Report</button>')
               // thread += ('<p class="id">id: '+reply._id+' ('+reply.created_on.replace(/T.+Z/, '')+')</p>');
               thread += ('<input type="hidden" name="thread_id" value="'+x._id+'"><input type="hidden" name="reply_id" value="'+reply._id+'"></div></form>');
-              thread += ('<form id="delete-reply" class="mb-3 mb-sm-4"><input type="hidden" value="'+x._id+'" name="thread_id" required=""><input type="hidden" value="'+reply._id+'" name="reply_id" required=""><div class="form-row"><input class="form-control col-12 col-md-4" type="password" placeholder="password" name="delete_password" required=""><button type="submit" class="btn btn-danger">Delete Reply</button></div></form>');
+              thread += ('<formclass=="delete-reply" class="mb-3 mb-sm-4"><input type="hidden" value="'+x._id+'" name="thread_id" required=""><input type="hidden" value="'+reply._id+'" name="reply_id" required=""><div class="form-row"><input class="form-control col-12 col-md-4" type="password" placeholder="password" name="delete_password" required=""><button type="submit" class="btn btn-danger">Delete Reply</button></div></form>');
               thread += ('</div>')
             })
             thread += ('<div class="newReply mt-5">')
@@ -127,7 +129,7 @@
           e.preventDefault();
         });
        
-        $('#board-display').on('submit','#report-reply', function(e) {
+        $('#board-display').on('submit','.report-reply', function(e) {
           $.ajax({
             type: "PUT",
             url: "/api/replies/"+currentBoard,
@@ -150,7 +152,7 @@
           e.preventDefault();
         });        
         
-        $('#board-display').on('submit','#delete-reply', function(e) {
+        $('#board-display').on('submit','.delete-reply', function(e) {
           $.ajax({
             type: "DELETE",
             url: "/api/replies/"+currentBoard,
