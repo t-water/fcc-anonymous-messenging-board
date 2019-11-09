@@ -47,7 +47,7 @@
         if(!/\/$/.test(window.location.pathname)){
           window.location.href = window.location.pathname + '/'
         }
-        $('#board-title').text('Welcome to '+window.location.pathname)
+        $('#board-title').text('Welcome to '+window.location.pathname.toLowerCase())
         $('#thread-error').text(sessionStorage.getItem('thread-error'))
         sessionStorage.removeItem('thread-error')
         
@@ -66,7 +66,7 @@
               thread += ('<div class="reply">')
               thread += ('<form class="report-reply"><div class="form-row"><h3 class="col-12 col-sm-10 col-md-11">-'+reply.text+'</h3><button type="submit" class="btn btn-warning col-12 col-sm-2 col-md-1 col-sm-2">Report</button>')
               thread += ('<input type="hidden" name="thread_id" value="'+x._id+'"><input type="hidden" name="reply_id" value="'+reply._id+'"></div></form>');
-              thread += ('<formclass=="delete-reply" class="mb-3 mb-sm-4"><input type="hidden" value="'+x._id+'" name="thread_id" required=""><input type="hidden" value="'+reply._id+'" name="reply_id" required=""><div class="form-row"><input class="form-control col-12 col-md-4" type="password" placeholder="password" name="delete_password" required=""><button type="submit" class="btn btn-danger">Delete Reply</button></div></form>');
+              thread += ('<form class="delete-reply" class="mb-3 mb-sm-4"><input type="hidden" value="'+x._id+'" name="thread_id" required=""><input type="hidden" value="'+reply._id+'" name="reply_id" required=""><div class="form-row"><input class="form-control col-12 col-md-4" type="password" placeholder="password" name="delete_password" required=""><button type="submit" class="btn btn-danger">Delete Reply</button></div></form>');
               thread += ('</div>')
             })
             thread += ('<div class="newReply mt-5">')

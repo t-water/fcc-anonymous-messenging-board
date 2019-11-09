@@ -55,8 +55,8 @@
         var currentURL = window.location.pathname.slice(3);
         currentURL = currentURL.split('/');
     
-        $('#threadTitle').text(window.location.pathname);
-        $('title').text(window.location.pathname)
+        $('#threadTitle').text(window.location.pathname.toLowerCase());
+        $('title').text(window.location.pathname.toLowerCase())
         
         $.ajax({
           type: "GET",
