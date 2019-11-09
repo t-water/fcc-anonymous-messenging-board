@@ -28,10 +28,10 @@ module.exports = function(app) {
     Thread.aggregate([
       {
         $limit: 10
-      }, 
+      },
       {
         $project: {delete_password: 0, reported: 0, 'replies.delete_password': 0}
-      }, 
+      },
       {
         $sort: {'bumped_on': -1}
       }, 
@@ -39,11 +39,11 @@ module.exports = function(app) {
         "$unwind": '$replies'
       },
       {
-        $sort: {'replies.created_on': 1}
+        $sort: {'replies.created_on': -1}
       },
       {
         '$group': {
-          '_id': '$_id',
+         
           'replies': {'$push': '$replies'}
         }
       }
