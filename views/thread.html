@@ -81,6 +81,10 @@
               $('#reply-' + i).find('input[name="thread_id"]').val(data._id)
               $('#reply-' + i).find('input[name="reply_id"]').val(x._id)
             })
+          },
+          error: function(request, status, error){
+            alert('Thread with id: ' + currentURL[1] + ' does not exist')
+            window.location.href = '/b/' + currentURL[0] + '/'
           }
         });
         

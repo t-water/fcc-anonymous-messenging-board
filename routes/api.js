@@ -103,23 +103,20 @@ module.exports = function(app) {
         res.setHeader('Content-Type', 'application/json')
         res.json(thread)
       }else{
-        res.statusCode = 301;
-        res.redirect('/api/threads/'+board)
-        res.send('bad')
-        // res.statusCode = 404;
-        // res.send('Could not find thread: ' + thread_id + ' in board: ' + req.params.board)
+        res.statusCode = 404;
+        res.send('Could not find thread: ' + thread_id + ' in board: ' + req.params.board)
       }
     }, err => {
         res.statusCode = 301;
         res.redirect('/api/threads/'+board)
-      // res.statusCode = 500;
-      // res.send('Could not find thread: ' + thread_id + ' in board: ' + req.params.board)
+      res.statusCode = 500;
+      res.send('Could not find thread: ' + thread_id + ' in board: ' + req.params.board)
     })
     .catch(err => {
          res.statusCode = 301;
          res.redirect('/api/threads/'+board) 
-      // res.statusCode = 500;
-      // res.send('Could not find thread: ' + thread_id + ' in board: ' + req.params.board)
+      res.statusCode = 500;
+      res.send('Could not find thread: ' + thread_id + ' in board: ' + req.params.board)
     })
   })
   
