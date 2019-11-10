@@ -21,7 +21,7 @@
       <div>
         <p id="thread-error" class="text-center text-danger"></p>
         <h3>Submit a new thread:</h3>
-        <form id="new-thread" method="post" action="/api/">
+        <form id="new-thread" method="post">
           <div class="form-row mb-3">
             <textarea class="form-control col-12" rows="8" type="text" placeholder="Thread text..." name="text" maxlength = "500" required></textarea>
           </div>
@@ -32,7 +32,6 @@
           <div class="form-row">
             <button class="btn btn-success" type="submit">Submit</button>
           </div>
-          
         </form>
       </div>
       <div id="board-display">
@@ -54,12 +53,17 @@
         function displayThreads(threads){
           threads.forEach((x, i) => {
             let thread = ''
-            thread += '<div class="thread px-2 px-md-5">';
-            thread += '<div class="main">'
+            thread += '<div class="thread px-2 px-md-5"><div class="main">';
             thread += '<h2 class="thread-title" id="thread-title-' + i +'"></h2>';
-            thread += ('<form class="report-thread-form"><div class="form-row mb-4"><input type="hidden" name="report_id" value="'+x._id+'"><button type="submit" class="btn btn-link pl-0 pl-md-2">Report Thread</button><button class="initiate-delete btn btn-link pl-0 pl-md-2" data-form="#delete-thread-form-' + i + '">Delete Thread</button></div></form>')
-            thread += ('<form class="delete-thread-form d-none" id="delete-thread-form-' + i + '"><div class="form-row mb-5"><input type="hidden" value="' + x._id + '" name="thread_id" required><input class="form-control col-12 col-md-3" type="password" placeholder="Delete Thread" name="delete_password" required><button type="submit" class="btn btn-outline-danger">Delete</button></div></form>')
-            thread += ('</div><div class="replies">')
+            thread += '<form class="report-thread-form"><div class="form-row mb-4">'
+            thread += ('<input type="hidden" name="report_id" value="'+x._id+'">')
+            thread += '<button type="submit" class="btn btn-link pl-0 pl-md-2">Report Thread</button>'
+            thread += ('<button class="initiate-delete btn btn-link pl-0 pl-md-2" data-form="#delete-thread-form-' + i + '">Delete Thread</button></div></form>')
+            thread += ('<form class="delete-thread-form d-none" id="delete-thread-form-' + i + '"><div class="form-row mb-5">')
+            thread += '<input type="hidden" value="' + x._id + '" name="thread_id" required>'
+            thread += '<input class="form-control col-12 col-md-3" type="password" placeholder="Delete Thread" name="delete_password" required>'
+            thread += '<button type="submit" class="btn btn-outline-danger">Delete</button></div></form>'
+            thread += ('</div><div class="replies px-5">')
             var hiddenCount = x.reply_count - 3;
             if (hiddenCount < 1) { hiddenCount = 0 }
             let replyTotal = x.reply_count == 1 ? ' reply total' : ' replies total'
@@ -67,7 +71,7 @@
             x.replies.forEach((reply, j) => {
               thread += ('<div class="reply">')
               thread += '<h3 id="reply-text-' + i + '-' + j + '"></h3>'
-              thread += ('<form class="report-reply-form"><div class="form-row mb-2"><button type="submit" class="btn btn-link pl-0">Report Reply</button><button class="initiate-delete btn btn-link pl-0 pl-md-2" data-form="#delete-reply-form-' + i + '-' + j + '">Delete Reply</button>')
+              thread += ('<form class="report-reply-form"><div class="form-row mb-5"><button type="submit" class="btn btn-link pl-0">Report Reply</button><button class="initiate-delete btn btn-link pl-0 pl-md-2" data-form="#delete-reply-form-' + i + '-' + j + '">Delete Reply</button>')
               thread += ('<input type="hidden" name="thread_id" value="'+x._id+'"><input type="hidden" name="reply_id" value="'+reply._id+'"></div></form>');
               thread += ('<form id="delete-reply-form-' + i + '-' + j + '"class="delete-reply-form d-none" class="mb-3 mb-sm-4"><input type="hidden" value="'+x._id+'" name="thread_id" required=""><input type="hidden" value="'+reply._id+'" name="reply_id" required=""><div class="form-row mb-4"><input class="form-control col-12 col-md-4" type="password" placeholder="password" name="delete_password" required=""><button type="submit" class="btn btn-outline-danger">Delete Reply</button></div></form>');
               thread += ('</div>')
@@ -101,13 +105,15 @@
         });
         
         $('#board-display').on('click', '.initiate-delete', function(e){
-          console.log($(this).text())
-          if($(this).text() == 'Delete Thread'){
+          if($(this).text() == 'Delete Thread' || $(this).text() == 'Delete Reply'){
             $($(this).attr('data-form')).removeClass('d-none')
             $(this).text('Cancel Delete')
           }else if($(this).text() == 'Cancel Delete'){
             $($(this).attr('data-form')).addClass('d-none')
-            $(this).text('Delete Thread')
+            if()){
+              $(this).text('Delete Thread')
+            }else if()
+            
           }
           e.preventDefault();
         })
