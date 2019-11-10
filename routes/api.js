@@ -82,7 +82,7 @@ module.exports = function(app) {
     .then(foundThread => {
       if(foundThread.reported){
         res.statusCode = 200;
-        res.send('Thread has already been reported.')
+        res.send('This thread has already been reported.')
       }else{
         Thread.findByIdAndUpdate(id, {reported: true})
         .then(threadToReport => {
