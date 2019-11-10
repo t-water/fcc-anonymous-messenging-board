@@ -64,7 +64,7 @@
             thread += ('<h5><strong>'+x.reply_count+ replyTotal + '('+hiddenCount+' hidden)- </strong><a href="'+window.location.pathname+x._id+'">See the full thread here</a>.</h5>')
             x.replies.forEach((reply, j) => {
               thread += ('<div class="reply">')
-              thread += ('<form class="report-reply"><div class="form-row mb-2"><h3 id="reply-text-' + i + '-' +  + '">-'+reply.text+'</h3><button type="submit" class="btn btn-link col-6 col-sm-3 col-md-2">Report Reply</button>')
+              thread += ('<form class="report-reply"><div class="form-row mb-2"><h3 id="reply-text-' + i + '-' + j + '"></h3><button type="submit" class="btn btn-link col-6 col-sm-3 col-md-2">Report Reply</button>')
               thread += ('<input type="hidden" name="thread_id" value="'+x._id+'"><input type="hidden" name="reply_id" value="'+reply._id+'"></div></form>');
               thread += ('<form class="delete-reply" class="mb-3 mb-sm-4"><input type="hidden" value="'+x._id+'" name="thread_id" required=""><input type="hidden" value="'+reply._id+'" name="reply_id" required=""><div class="form-row mb-4"><input class="form-control col-12 col-md-4" type="password" placeholder="password" name="delete_password" required=""><button type="submit" class="btn btn-outline-danger">Delete Reply</button></div></form>');
               thread += ('</div>')
@@ -79,6 +79,9 @@
             thread += ('</div></form></div></div></div>')
             $('#board-display').append(thread)
             $('#board-display').find('#thread-title-'+i).text(x.text)
+            x.replies.forEach((reply, j) => {
+               $('#board-display').find('#reply-text-' + i + '-' + j).text(reply.text)
+            })
           })
           
         }
