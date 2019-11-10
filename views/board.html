@@ -175,7 +175,9 @@
             success: function(data) {
               alert(data)
             },
-            error: function(request, status, error)
+            error: function(request, status, error){
+              alert(request.responseText)
+            }
           });
           e.preventDefault();
         });

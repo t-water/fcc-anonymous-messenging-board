@@ -26,7 +26,7 @@
             <h2 id="thread-heading" class=""></h2>
             <p id="thread-information"></p>
             <form id="report-thread-form">
-              <div class="form-row mb-2">
+              <div class="form-row mb-5">
                 <input type="hidden" id="report_id" name="report_id">
                 <button type="submit" class="btn btn-link pl-0">Report Thread</button>
                 <button type="submit" class="btn btn-link initiate-delete" data-form="#delete-thread-form">Delete Thread</button>
@@ -92,7 +92,7 @@
               reply += '<form class="report-reply-form">'
               reply += '<div class="form-row mb-5">'
               reply += '<input type="hidden" name="thread_id"><input type="hidden" name="reply_id">';
-              reply += '<button type="submit" class="btn btn-link">Report Reply</button>'
+              reply += '<button type="submit" class="btn btn-link pl-0">Report Reply</button>'
               reply += '<button type="submit" class="btn btn-link initiate-delete" data-form="#delete-reply-form-' + i + '">Delete Reply</button></div></form>';
               reply += '<form class="delete-reply-form d-none" id="delete-reply-form-' + i + '">';
               reply += '<input type="hidden" name="thread_id"><div class="form-row mb-5"><input type="hidden" name="reply_id"><input class="form-control col-12 col-md-6 col-lg-3" type="password" placeholder="password" name="delete_password" required>'
@@ -109,6 +109,22 @@
             window.location.href = '/b/' + currentURL[0] + '/'
           }
         });
+        
+        $('#new-reply-form').submit(function(e){
+          $.ajax({
+            url: '/api/replies/' + currentURL[0],
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function(data){
+              alert('Reply created successfully')
+              location.reload();
+            },
+            error: function(request, status, error){
+              alert(request.responseText)
+            }
+          })
+          e.preventDefault()
+        })
         
         $('#board-display').on('click', '.initiate-delete', function(e){
           if($(this).text() == 'Delete Thread' || $(this).text() == 'Delete Reply'){
@@ -167,7 +183,10 @@
             type: "DELETE",
             url: url,
             data: $(this).serialize(),
-            success: function(data) { alert(data) },
+            success: function(data) { 
+              alert(data)
+              location.reload()
+            },
             error: function(request, status, error){
               alert(request.responseText)
             }
