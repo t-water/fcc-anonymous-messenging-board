@@ -54,8 +54,10 @@
         function displayThreads(threads){
           threads.forEach((x, i) => {
             let thread = ''
-            thread += '<div class="thread px-2 px-md-5"><div class="main">';
-            thread += ('<form class="report-thread-form"><div class="form-row mb-4"><h2 class="thread-title" id="thread-title-' + i +'"></h2><input type="hidden" name="report_id" value="'+x._id+'"><button type="submit" class="btn btn-link pl-0 pl-md-2">Report Thread</button><button class="initiate-delete-thread btn btn-link pl-0 pl-md-2" data-form="#delete-thread-form-' + i + '">Delete Thread</button></div></form>')
+            thread += '<div class="thread px-2 px-md-5">';
+            thread += '<div class="main">'
+            thread += '<h2 class="thread-title" id="thread-title-' + i +'"></h2>';
+            thread += ('<form class="report-thread-form"><div class="form-row mb-4"><input type="hidden" name="report_id" value="'+x._id+'"><button type="submit" class="btn btn-link pl-0 pl-md-2">Report Thread</button><button class="initiate-delete btn btn-link pl-0 pl-md-2" data-form="#delete-thread-form-' + i + '">Delete Thread</button></div></form>')
             thread += ('<form class="delete-thread-form d-none" id="delete-thread-form-' + i + '"><div class="form-row mb-5"><input type="hidden" value="' + x._id + '" name="thread_id" required><input class="form-control col-12 col-md-3" type="password" placeholder="Delete Thread" name="delete_password" required><button type="submit" class="btn btn-outline-danger">Delete</button></div></form>')
             thread += ('</div><div class="replies">')
             var hiddenCount = x.reply_count - 3;
@@ -64,9 +66,10 @@
             thread += ('<h5><strong>'+x.reply_count+ replyTotal + '('+hiddenCount+' hidden)- </strong><a href="'+window.location.pathname+x._id+'">See the full thread here</a>.</h5>')
             x.replies.forEach((reply, j) => {
               thread += ('<div class="reply">')
-              thread += ('<form class="report-reply-form"><div class="form-row mb-2"><h3 id="reply-text-' + i + '-' + j + '"></h3><button type="submit" class="btn btn-link col-6 col-sm-3 col-md-2">Report Reply</button>')
+              thread += '<h3 id="reply-text-' + i + '-' + j + '"></h3>'
+              thread += ('<form class="report-reply-form"><div class="form-row mb-2"><button type="submit" class="btn btn-link pl-0">Report Reply</button><button class="initiate-delete btn btn-link pl-0 pl-md-2" data-form="#delete-reply-form-' + i + '-' + j + '">Delete Reply</button>')
               thread += ('<input type="hidden" name="thread_id" value="'+x._id+'"><input type="hidden" name="reply_id" value="'+reply._id+'"></div></form>');
-              thread += ('<form class="delete-reply" class="mb-3 mb-sm-4"><input type="hidden" value="'+x._id+'" name="thread_id" required=""><input type="hidden" value="'+reply._id+'" name="reply_id" required=""><div class="form-row mb-4"><input class="form-control col-12 col-md-4" type="password" placeholder="password" name="delete_password" required=""><button type="submit" class="btn btn-outline-danger">Delete Reply</button></div></form>');
+              thread += ('<form id="delete-reply-form-' + i + '-' + j + '"class="delete-reply-form d-none" class="mb-3 mb-sm-4"><input type="hidden" value="'+x._id+'" name="thread_id" required=""><input type="hidden" value="'+reply._id+'" name="reply_id" required=""><div class="form-row mb-4"><input class="form-control col-12 col-md-4" type="password" placeholder="password" name="delete_password" required=""><button type="submit" class="btn btn-outline-danger">Delete Reply</button></div></form>');
               thread += ('</div>')
             })
             thread += ('<div class="new-reply mt-5">')
@@ -97,7 +100,7 @@
           }
         });
         
-        $('#board-display').on('click', '.initiate-delete-thread', function(e){
+        $('#board-display').on('click', '.initiate-delete', function(e){
           console.log($(this).text())
           if($(this).text() == 'Delete Thread'){
             $($(this).attr('data-form')).removeClass('d-none')
