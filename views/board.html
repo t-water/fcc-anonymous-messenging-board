@@ -55,7 +55,7 @@
           threads.forEach((x, i) => {
             let thread = ''
             thread += '<div class="thread px-2 px-md-5"><div class="main">';
-            thread += ('<form class="report-thread-form"><div class="form-row mb-4"><h2 class="thread-title" id="thread-title-' + i +'"></h2><input type="hidden" name="report_id" value="'+x._id+'"><button type="submit" class="btn btn-link pl-0 pl-md-2">Report Thread</button><button class="initiate-delete-thread btn btn-link pl-0 pl-md-2" data-form="delete-thread-form-' + i + '">Delete Thread</button></div></form>')
+            thread += ('<form class="report-thread-form"><div class="form-row mb-4"><h2 class="thread-title" id="thread-title-' + i +'"></h2><input type="hidden" name="report_id" value="'+x._id+'"><button type="submit" class="btn btn-link pl-0 pl-md-2">Report Thread</button><button class="initiate-delete-thread btn btn-link pl-0 pl-md-2" data-form="#delete-thread-form-' + i + '">Delete Thread</button></div></form>')
             thread += ('<form class="delete-thread-form d-none" id="delete-thread-form-' + i + '"><div class="form-row mb-5"><input type="hidden" value="' + x._id + '" name="thread_id" required><input class="form-control col-12 col-md-3" type="password" placeholder="delete thread" name="delete_password" required><button type="submit" class="btn btn-outline-danger">Delete</button></div></form>')
             thread += ('</div><div class="replies">')
             var hiddenCount = x.reply_count - 3;
@@ -92,6 +92,11 @@
             alert(request.responseText)
           }
         });
+        
+        $('.initiate-delete-thread').click(function(e){
+          console.log($(this).attr('data-form'))
+          e.preventDefault();
+        })
         
         $('#new-thread').submit(function(e){
           $.ajax({
