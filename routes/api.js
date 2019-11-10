@@ -62,15 +62,15 @@ module.exports = function(app) {
     newThread.save()
     .then(data => {
       res.statusCode = 200;
-      res.setHeader('Content-type', 'application/json')
-      res.redirect('/b/' + req.params.board + '/')
+      res.setHeader('Content-type', 'application/text')
+      res.send('Thread Posted Successfully')
     }, err => {
       res.statusCode = 500;
-      res.send('Thread Failed To Send');
+      res.send('Thread Failed To POST');
     })
     .catch(err => {
       res.statusCode = 500;
-      res.send('Thread Failed To Send');
+      res.send('Thread Failed To POST');
     })
   })
   
@@ -251,12 +251,27 @@ module.exports = function(app) {
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/text')
             res.json('Reply Successfully Deleted')
-          }, err => next(err))
-          .catch(err => next(err))
+          }, err => {
+            res.statusCode = 500;
+            res.send('Could not delete reply with id: ' + reply_id)
+          })
+          .catch(err => {
+            res.statusCode = 500;
+            res.send('Could not delete reply with id: ' + reply_id)
+          })
+        }else{
+          res.statusCode = 404;
+          res.send('Incorrect Password')
         }
       })
-    }, err => next(err))
-    .catch(err => next(err))
+    }, err => {
+      res.statusCode = 500;
+      res.send('Could not delete reply with id: ' + reply_id)
+    })
+    .catch(err => {
+      res.statusCode = 500;
+      res.send('Could not delete reply with id: ' + reply_id)
+    })
   })
 
 };

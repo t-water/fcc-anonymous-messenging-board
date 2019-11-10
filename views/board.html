@@ -46,7 +46,7 @@
         if(!/\/$/.test(window.location.pathname)){
           window.location.href = window.location.pathname + '/'
         }
-        $('#board-title').text('Welcome to '+ decodeUri(window.location.pathname.toLowerCase()))
+        $('#board-title').text('Welcome to '+ decodeURI(window.location.pathname.toLowerCase()))
         $('#thread-error').text(sessionStorage.getItem('thread-error'))
         sessionStorage.removeItem('thread-error')
         
@@ -125,6 +125,7 @@
             type: 'POST',
             data: $(this).serialize(),
             success: function(data){
+              alert(data)
               location.reload();
             }
           })
@@ -183,7 +184,7 @@
               location.reload()
             },
             error: function(request, status, error){
-              alert(request.reponseText)
+              alert(request.responseText)
             }
           });
           e.preventDefault();
