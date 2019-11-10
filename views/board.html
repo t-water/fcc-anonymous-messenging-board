@@ -69,7 +69,7 @@
             let replyTotal = x.reply_count == 1 ? ' reply total' : ' replies total'
             thread += ('<h5 class="mb-5"><strong>'+x.reply_count+ replyTotal + '('+hiddenCount+' hidden)- </strong><a href="'+window.location.pathname+x._id+'">See the full thread here</a>.</h5>')
             x.replies.forEach((reply, j) => {
-              thread += ('<div class="reply px-5">')
+              thread += ('<div class="reply px-2 px-md-5">')
               thread += '<h3 id="reply-text-' + i + '-' + j + '"></h3>'
               thread += ('<form class="report-reply-form"><div class="form-row mb-5"><button type="submit" class="btn btn-link pl-0">Report Reply</button><button class="initiate-delete btn btn-link pl-0 pl-md-2" data-form="#delete-reply-form-' + i + '-' + j + '">Delete Reply</button>')
               thread += ('<input type="hidden" name="thread_id" value="'+x._id+'"><input type="hidden" name="reply_id" value="'+reply._id+'"></div></form>');

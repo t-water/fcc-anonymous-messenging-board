@@ -17,21 +17,22 @@
   <body>
     
     <div class = "container-fluid">
-      <h1 id="threadTitle" class="text-center"></h1>
+      <h1 id="thread-title" class="text-center"></h1>
       <p class="text-center"><a href="https://foremost-catboat.glitch.me/">Return Home</a></p>
       <p class="text-center"><a id = "return-to-board" href=""></a></p>
       <div id="board-display">
         <div class="thread px-2 px-md-5">
           <div class="main">
+            <h2 id="thread-heading" class=""></h2>
+            <p id="thread-information"></p>
             <form id="report-thread">
               <div class="form-row mb-2">
                 <input type="hidden" id="report_id" name="report_id">
-                <h2 id="thread-heading" class=""></h2>
-                <button type="submit" class="btn btn-link">Report Thread</button>
+                <button type="submit" class="btn btn-link pl-0">Report Thread</button>
+                <button type="submit" class="btn btn-link initiate-delete" data-form="#delete-thread">Delete Thread</button>
               </div>
             </form>
-            <p id="thread-information"></p>
-            <form id="delete-thread">
+            <form id="delete-thread" class="d-none">
               <div class="form-row mb-5">
                 <input id="delete_id" type="hidden" name="thread_id" required>
                 <input class="form-control col-12 col-md-6 col-lg-3" type="password" placeholder="password" name="delete_password" required>
@@ -40,7 +41,7 @@
             </form>
           </div>
           <div class="replies">
-            <div id="ajax-replies"></div>
+            <div id="ajax-replies" class="px-2 px-md-5"></div>
             <div class="newReply mt-5">
               <h2>Create a New Reply</h2>
               <form method="post" id="newReply">
@@ -67,7 +68,7 @@
         var currentURL = window.location.pathname.slice(3);
         currentURL = currentURL.split('/');
     
-        $('#threadTitle').text(decodeURI(window.location.pathname.toLowerCase()));
+        $('#thread-title').text(decodeURI(window.location.pathname.toLowerCase()));
         $('title').text(window.location.pathname.toLowerCase())
         $('#return-to-board').attr('href', '/b/' + currentURL[0] + '/').text('Return to /b/' + decodeURI(currentURL[0]) + '/')
         
@@ -86,13 +87,14 @@
             $('input[type="hidden"]').val(data._id)
             data.replies.forEach((x, i) => {
               let reply = '<div id="reply-' + i + '">';
-              reply += '<p class="reply-id"></p>'
-              reply += '<form class="report-reply">'
-              reply += '<div class="form-row mb-2">'
-              reply += '<input type="hidden" name="thread_id"><input type="hidden" name="reply_id">';
               reply += '<h3 class="reply-text"></h3>'
-              reply += '<button type="submit" class="btn btn-link col-6 col-sm-3 col-md-2">Report Reply</button></div></form>';
-              reply += '<form class="delete-reply">';
+              reply += '<p class="reply-id mb-0"></p>'
+              reply += '<form class="report-reply">'
+              reply += '<div class="form-row mb-5">'
+              reply += '<input type="hidden" name="thread_id"><input type="hidden" name="reply_id">';
+              reply += '<button type="submit" class="btn btn-link">Report Reply</button>'
+              reply += '<button type="submit" class="btn btn-link" data-form="#delete-reply-form-' + i + '">Delete Reply</button></div></form>';
+              reply += '<form class="delete-reply d-none" id="delete-reply-form-' + i + '">';
               reply += '<input type="hidden" name="thread_id"><div class="form-row mb-5"><input type="hidden" name="reply_id"><input class="form-control col-12 col-md-6 col-lg-3" type="password" placeholder="password" name="delete_password" required>'
               reply += '<button type="submit" class="btn btn-outline-danger col-6 col-md-3 col-lg-2 ml-lg-1">Delete Reply</button></div></form>'
               $('#ajax-replies').append(reply)
@@ -107,6 +109,21 @@
             window.location.href = '/b/' + currentURL[0] + '/'
           }
         });
+        
+        $('#board-display').on('click', '.initiate-delete', function(e){
+          if($(this).text() == 'Delete Thread' || $(this).text() == 'Delete Reply'){
+            $($(this).attr('data-form')).removeClass('d-none')
+            $(this).text('Cancel Delete')
+          }else if($(this).text() == 'Cancel Delete'){
+            $($(this).attr('data-form')).addClass('d-none')
+            if(/thread/.test($(this).attr('data-form'))){
+              $(this).text('Delete Thread')
+            }else if(/reply/.test($(this).attr('data-form'))){
+              $(this).text('Delete Reply')
+            }
+          }
+          e.preventDefault();
+        })
         
         $('#newThread').submit(function(){
           $(this).attr('action', "/api/threads/" + currentBoard);
