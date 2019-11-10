@@ -55,8 +55,8 @@
           threads.forEach((x, i) => {
             let thread = ''
             thread += '<div class="thread px-2 px-md-5"><div class="main">';
-            thread += ('<form id="report-thread"><div class="form-row mb-4"><h2 class="thread-title" id="thread-title-' + i +'"></h2><input type="hidden" name="report_id" value="'+x._id+'"><button type="submit" class="btn btn-link pl-0 pl-md-2">Report Thread</button></div></form>')
-            thread += ('<form id="delete-thread"><div class="form-row mb-5"><input type="hidden" value="' + x._id + '" name="thread_id" required><input class="form-control col-12 col-md-3" type="password" placeholder="delete thread" name="delete_password" required><button type="submit" class="btn btn-outline-danger">Delete</button></div></form>')
+            thread += ('<form class="report-thread-form"><div class="form-row mb-4"><h2 class="thread-title" id="thread-title-' + i +'"></h2><input type="hidden" name="report_id" value="'+x._id+'"><button type="submit" class="btn btn-link pl-0 pl-md-2">Report Thread</button></div></form>')
+            thread += ('<form class="delete-thread-form"><div class="form-row mb-5"><input type="hidden" value="' + x._id + '" name="thread_id" required><input class="form-control col-12 col-md-3" type="password" placeholder="delete thread" name="delete_password" required><button type="submit" class="btn btn-outline-danger">Delete</button></div></form>')
             thread += ('</div><div class="replies">')
             var hiddenCount = x.reply_count - 3;
             if (hiddenCount < 1) { hiddenCount = 0 }
@@ -69,8 +69,8 @@
               thread += ('<form class="delete-reply" class="mb-3 mb-sm-4"><input type="hidden" value="'+x._id+'" name="thread_id" required=""><input type="hidden" value="'+reply._id+'" name="reply_id" required=""><div class="form-row mb-4"><input class="form-control col-12 col-md-4" type="password" placeholder="password" name="delete_password" required=""><button type="submit" class="btn btn-outline-danger">Delete Reply</button></div></form>');
               thread += ('</div>')
             })
-            thread += ('<div class="newReply mt-5">')
-            thread += ('<form method="post" id="new-reply">');
+            thread += ('<div class="new-reply mt-5">')
+            thread += ('<form method="post" class="new-reply-form">');
             thread += ('<h3>Add New Reply</h3><hr class="mt-0"/>')
             thread += ('<input type="hidden" name="thread_id" value="'+x._id+'">');
             thread += ('<div class="form-row mb-3"><textarea class="form-control col-12" rows="5" type="text" placeholder="Quick reply..." name="text" required=""></textarea></div>');
@@ -140,7 +140,7 @@
           e.preventDefault();
         });
         
-        $('#board-display').on('submit','#delete-thread', function(e) {
+        $('#board-display').on('submit','.delete-thread-form', function(e) {
           $.ajax({
             type: "DELETE",
             url: "/api/threads/"+currentBoard,
@@ -148,6 +148,9 @@
             success: function(data) {
               alert(data) 
               location.reload()
+            },
+            error: function(request, status, error){
+              alert(request.reponseText)
             }
           });
           e.preventDefault();

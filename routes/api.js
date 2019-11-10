@@ -118,15 +118,35 @@ module.exports = function(app) {
     .then(thread => {
       thread.comparePassword(password, (err, isMatch) => {
         if(err){
-          return(next(err))
+          res.statusCode = 500;
+          res.send('Could not delete thread with ID: ' + id)
         }else if(isMatch){
           Thread.findByIdAndDelete(id)
-          .then(data => res.send('Deleted Successfully'), err => next(err))
-          .catch(err => next(err))
+          .then(data => {
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/text')
+            res.send('Deleted Successfully')
+          }, err => {
+            res.statusCode = 500;
+            res.send('Could not delete thread with ID: ' + id)
+          })
+          .catch(err => {
+            res.statusCode = 500;
+            res.send('Could not delete thread with ID: ' + id)
+          })
+        }else{
+          res.statusCode = 404;
+          res.send('Incorrect Password')
         }
       })
-    }, err => next(err))
-    .catch(err => next(err))
+    }, err => {
+      res.statusCode = 500;
+      res.send('Could not find thread with ID: ' + id)
+    })
+    .catch(err => {
+      res.statusCode = 500;
+      res.send('Could not find thread with ID: ' + id)
+    })
   })
     
   app.route('/api/replies/:board')
