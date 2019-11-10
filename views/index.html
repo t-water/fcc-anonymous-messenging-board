@@ -69,6 +69,8 @@
             data.forEach(x => {
               $('#board-links').append('<p><a class="board-link" href="/b/' + x.name + '/">' + x.name + '</a></p>')
             })
+          }, error: function(request, status, error){
+            $('#board-links').html('<p class="text-danger">The list of boards could not be generated at this time.</p>')
           }
         })
         $('#new-thread').submit(function(e){

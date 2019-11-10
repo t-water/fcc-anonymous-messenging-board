@@ -78,7 +78,7 @@
             thread += ('<div class="form-row mb-5"><button class="btn btn-success" type="submit">Submit</button>')
             thread += ('</div></form></div></div></div>')
             $('#board-display').append(thread)
-            console.log($('#board-display').find('#thread-title'+i))
+            $('#board-display').find('#thread-title-'+i).text(x.text)
           })
           
         }
