@@ -51,7 +51,7 @@
         sessionStorage.removeItem('thread-error')
         
         function displayThreads(threads){
-          threads.forEach((x, i) => {
+          threads.forEach((x, i, arr) => {
             let thread = ''
             thread += '<div class="thread px-2 px-md-5"><div class="main">';
             thread += '<h2 class="thread-title" id="thread-title-' + i +'"></h2>';
@@ -63,13 +63,13 @@
             thread += '<input type="hidden" value="' + x._id + '" name="thread_id" required>'
             thread += '<input class="form-control col-12 col-md-3" type="password" placeholder="Delete Thread" name="delete_password" required>'
             thread += '<button type="submit" class="btn btn-outline-danger">Delete</button></div></form>'
-            thread += ('</div><div class="replies px-5">')
+            thread += ('</div><div class="replies">')
             var hiddenCount = x.reply_count - 3;
             if (hiddenCount < 1) { hiddenCount = 0 }
             let replyTotal = x.reply_count == 1 ? ' reply total' : ' replies total'
-            thread += ('<h5><strong>'+x.reply_count+ replyTotal + '('+hiddenCount+' hidden)- </strong><a href="'+window.location.pathname+x._id+'">See the full thread here</a>.</h5>')
+            thread += ('<h5 class="mb-5"><strong>'+x.reply_count+ replyTotal + '('+hiddenCount+' hidden)- </strong><a href="'+window.location.pathname+x._id+'">See the full thread here</a>.</h5>')
             x.replies.forEach((reply, j) => {
-              thread += ('<div class="reply">')
+              thread += ('<div class="reply px-5">')
               thread += '<h3 id="reply-text-' + i + '-' + j + '"></h3>'
               thread += ('<form class="report-reply-form"><div class="form-row mb-5"><button type="submit" class="btn btn-link pl-0">Report Reply</button><button class="initiate-delete btn btn-link pl-0 pl-md-2" data-form="#delete-reply-form-' + i + '-' + j + '">Delete Reply</button>')
               thread += ('<input type="hidden" name="thread_id" value="'+x._id+'"><input type="hidden" name="reply_id" value="'+reply._id+'"></div></form>');
@@ -85,10 +85,13 @@
             thread += ('<div class="form-row mb-5"><button class="btn btn-success" type="submit">Submit</button>')
             thread += ('</div></form></div></div></div>')
             $('#board-display').append(thread)
-            $('#board-display').append('<hr/>')
+            if(i < arr.length - 1){
+              $('#board-display').append('<hr/>')
+            }
+            
             $('#board-display').find('#thread-title-'+i).text(x.text)
             x.replies.forEach((reply, j) => {
-               $('#board-display').find('#reply-text-' + i + '-' + j).text(reply.text)
+               $('#board-display').find('#reply-text-' + i + '-' + j).text('- ' + reply.text)
             })
           })
           
@@ -190,7 +193,7 @@
           e.preventDefault();
         });        
         
-        $('#board-display').on('submit','.delete-reply', function(e) {
+        $('#board-display').on('submit','.delete-reply-form', function(e) {
           $.ajax({
             type: "DELETE",
             url: "/api/replies/"+currentBoard,
@@ -198,6 +201,9 @@
             success: function(data) {
               alert(data) 
               location.reload();
+            },
+            error: function(request, status, error){
+              alert(request.responseText)
             }
           });
           e.preventDefault();

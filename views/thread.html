@@ -67,9 +67,9 @@
         var currentURL = window.location.pathname.slice(3);
         currentURL = currentURL.split('/');
     
-        $('#threadTitle').text(window.location.pathname.toLowerCase());
+        $('#threadTitle').text(decodeURI(window.location.pathname.toLowerCase()));
         $('title').text(window.location.pathname.toLowerCase())
-        $('#return-to-board').attr('href', '/b/' + currentURL[0] + '/').text('Return to /b/' + currentURL[0] + '/')
+        $('#return-to-board').attr('href', '/b/' + currentURL[0] + '/').text('Return to /b/' + decodeURI(currentURL[0]) + '/')
         
         $('#report-thread-anchor').click(function(e){
           e.preventDefault()
