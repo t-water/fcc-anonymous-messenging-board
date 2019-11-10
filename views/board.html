@@ -172,7 +172,10 @@
             type: "PUT",
             url: "/api/replies/"+currentBoard,
             data: $(this).serialize(),
-            success: function(data) { alert(data) }
+            success: function(data) {
+              alert(data)
+            },
+            error: function(request, status, error)
           });
           e.preventDefault();
         });
