@@ -91,20 +91,20 @@ module.exports = function(app) {
             res.send("Successfully Reported")
         }, err => {
           res.statusCode = 500;
-          res.send('Could not report thread with id: ' + id)
+          res.send('Could not report thread with ID: ' + id)
         })
         .catch(err => {
           res.statusCode = 500;
-          res.send('Could not report thread with id: ' + id)
+          res.send('Could not report thread with ID: ' + id)
         })
       }
     }, err => {
       res.statusCode = 500;
-      res.send('Could not find thread with id: ' + id)
+      res.send('Could not find thread with ID: ' + id)
     })
     .catch(err => {
       res.statusCode = 500;
-      res.send('Could not find thread with id: ' + id)
+      res.send('Could not find thread with ID: ' + id)
     })
 
   })
@@ -203,7 +203,7 @@ module.exports = function(app) {
         })
       }else{
         res.statusCode = 404;
-        res.send('Could not find thread with id: ' + req.body.thread_id)
+        res.send('Could not find thread with ID: ' + req.body.thread_id)
       }
     }, err=> {
       res.statusCode = 500;
@@ -222,14 +222,29 @@ module.exports = function(app) {
     let Thread = mongoose.model(board, threadSchema, board);
     Thread.findOne({_id: thread_id})
     .then(thread => {
-      let reply = thread.replies.id(reply_id)
-      reply.reported = true;
-      thread.save()
-      .then(thread => {res.json("Reported Successfully")},
-      err => next(err))
-      .catch(err => next(err))
-    }, err => next(err))
-    .catch(err => next(err))
+      if(thread != null){
+        let reply = thread.replies.id(reply_id)
+        reply.reported = true;
+        thread.save()
+        .then(thread => {res.json("Reported Successfully")},
+        err => {
+          res.statusCode = 500;
+          res.send('Could not report reply with ID: ' + reply_id)
+        })
+        .catch(err => {
+          res.statusCode = 500;
+          res.send('Could not report reply with ID: ' + reply_id)
+        })
+      }
+
+    }, err => {
+      res.statusCode = 500;
+      res.send('Could not report reply with ID: ' + reply_id)
+    })
+    .catch(err => {
+      res.statusCode = 500;
+      res.send('Could not report reply with ID: ' + reply_id)
+    })
   })
   
   .delete((req, res, next) => {
@@ -253,11 +268,11 @@ module.exports = function(app) {
             res.json('Reply Successfully Deleted')
           }, err => {
             res.statusCode = 500;
-            res.send('Could not delete reply with id: ' + reply_id)
+            res.send('Could not delete reply with ID: ' + reply_id)
           })
           .catch(err => {
             res.statusCode = 500;
-            res.send('Could not delete reply with id: ' + reply_id)
+            res.send('Could not delete reply with ID: ' + reply_id)
           })
         }else{
           res.statusCode = 404;
@@ -266,11 +281,11 @@ module.exports = function(app) {
       })
     }, err => {
       res.statusCode = 500;
-      res.send('Could not delete reply with id: ' + reply_id)
+      res.send('Could not delete reply with ID: ' + reply_id)
     })
     .catch(err => {
       res.statusCode = 500;
-      res.send('Could not delete reply with id: ' + reply_id)
+      res.send('Could not delete reply with ID: ' + reply_id)
     })
   })
 

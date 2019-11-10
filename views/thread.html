@@ -25,14 +25,14 @@
           <div class="main">
             <h2 id="thread-heading" class=""></h2>
             <p id="thread-information"></p>
-            <form id="report-thread">
+            <form id="report-thread-form">
               <div class="form-row mb-2">
                 <input type="hidden" id="report_id" name="report_id">
                 <button type="submit" class="btn btn-link pl-0">Report Thread</button>
-                <button type="submit" class="btn btn-link initiate-delete" data-form="#delete-thread">Delete Thread</button>
+                <button type="submit" class="btn btn-link initiate-delete" data-form="#delete-thread-form">Delete Thread</button>
               </div>
             </form>
-            <form id="delete-thread" class="d-none">
+            <form id="delete-thread-form" class="d-none">
               <div class="form-row mb-5">
                 <input id="delete_id" type="hidden" name="thread_id" required>
                 <input class="form-control col-12 col-md-6 col-lg-3" type="password" placeholder="password" name="delete_password" required>
@@ -42,9 +42,9 @@
           </div>
           <div class="replies">
             <div id="ajax-replies" class="px-2 px-md-5"></div>
-            <div class="newReply mt-5">
+            <div class="new-reply mt-5">
               <h2>Create a New Reply</h2>
-              <form method="post" id="newReply">
+              <form method="post" id="new-reply-form">
                 <input id="post_id" type="hidden" name="thread_id">
                 <div class="form-row mb-3">
                   <textarea class="form-control col-12" rows="5" type="text" placeholder="Quick reply..." name="text" required></textarea>
@@ -89,12 +89,12 @@
               let reply = '<div id="reply-' + i + '">';
               reply += '<h3 class="reply-text"></h3>'
               reply += '<p class="reply-id mb-0"></p>'
-              reply += '<form class="report-reply">'
+              reply += '<form class="report-reply-form">'
               reply += '<div class="form-row mb-5">'
               reply += '<input type="hidden" name="thread_id"><input type="hidden" name="reply_id">';
               reply += '<button type="submit" class="btn btn-link">Report Reply</button>'
               reply += '<button type="submit" class="btn btn-link" data-form="#delete-reply-form-' + i + '">Delete Reply</button></div></form>';
-              reply += '<form class="delete-reply d-none" id="delete-reply-form-' + i + '">';
+              reply += '<form class="delete-reply-form d-none" id="delete-reply-form-' + i + '">';
               reply += '<input type="hidden" name="thread_id"><div class="form-row mb-5"><input type="hidden" name="reply_id"><input class="form-control col-12 col-md-6 col-lg-3" type="password" placeholder="password" name="delete_password" required>'
               reply += '<button type="submit" class="btn btn-outline-danger col-6 col-md-3 col-lg-2 ml-lg-1">Delete Reply</button></div></form>'
               $('#ajax-replies').append(reply)
@@ -123,14 +123,9 @@
             }
           }
           e.preventDefault();
-        })
+        })        
         
-        $('#newThread').submit(function(){
-          $(this).attr('action', "/api/threads/" + currentBoard);
-        });
-        
-        
-        $('#board-display').on('submit','#report-thread', function(e) {
+        $('#board-display').on('submit','#report-thread-form', function(e) {
           $.ajax({
             type: "PUT",
             url: "/api/threads/"+currentURL[0],
@@ -139,7 +134,7 @@
           });
           e.preventDefault();
         });
-        $('#board-display').on('submit','.report-reply', function(e) {
+        $('#board-display').on('submit','.report-reply-form', function(e) {
           var url = "/api/replies/"+currentURL[0];
           $.ajax({
             type: "PUT",
@@ -149,7 +144,7 @@
           });
           e.preventDefault();
         });
-        $('#board-display').on('submit','#delete-thread', function(e) {
+        $('#board-display').on('submit','#delete-thread-form', function(e) {
           var url = "/api/threads/"+currentURL[0];
           $.ajax({
             type: "DELETE",
@@ -165,7 +160,7 @@
           });
           e.preventDefault();
         });        
-        $('#board-display').on('submit','#delete-reply', function(e) {
+        $('#board-display').on('submit','.delete-reply-form', function(e) {
           var url = "/api/replies/"+currentURL[0];
           $.ajax({
             type: "DELETE",
