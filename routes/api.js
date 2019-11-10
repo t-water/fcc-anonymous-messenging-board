@@ -224,26 +224,38 @@ module.exports = function(app) {
     .then(thread => {
       if(thread != null){
         let reply = thread.replies.id(reply_id)
-        reply.reported = true;
-        thread.save()
-        .then(thread => {res.json("Reported Successfully")},
-        err => {
-          res.statusCode = 500;
-          res.send('Could not report reply with ID: ' + reply_id)
-        })
-        .catch(err => {
-          res.statusCode = 500;
-          res.send('Could not report reply with ID: ' + reply_id)
-        })
+        if(!reply.reported){
+          reply.reported = true;
+          thread.save()
+          .then(thread => {
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/text')
+            res.json("Reported Successfully")
+          },
+          err => {
+            res.statusCode = 500;
+            res.send('Could not report reply with ID: ' + reply_id)
+          })
+          .catch(err => {
+            res.statusCode = 500;
+            res.send('Could not report reply with ID: ' + reply_id)
+          })
+        }else{
+          res.statusCode = 200;
+          res.setHeader('Content-Type', 'application/text')
+          res.send('This reply has already been reported')
+        }
+      }else{
+        res.statusCode = 404;
+        res.send('Could not find thread with ID: ' + thread_id)
       }
-
     }, err => {
       res.statusCode = 500;
-      res.send('Could not report reply with ID: ' + reply_id)
+      res.send('Could not find thread with ID: ' + thread_id)
     })
     .catch(err => {
       res.statusCode = 500;
-      res.send('Could not report reply with ID: ' + reply_id)
+      res.send('Could not find thread with ID: ' + thread_id)
     })
   })
   
