@@ -24,7 +24,7 @@
         <div class="thread px-2 px-md-5">
           <div class="main">
             <h2 id="thread-heading" class=""></h2>
-            <p id="thread-information"></p>
+            <p id="thread-information" class="mb-0"></p>
             <form id="report-thread-form">
               <div class="form-row mb-5">
                 <input type="hidden" id="report_id" name="report_id">
@@ -171,7 +171,7 @@
               window.location.href = '/b/' + currentURL[0] + '/'
             },
             error: function(request, status, error){
-              console.log(request.responseText)
+              alert(request.responseText)
             }
           });
           e.preventDefault();
