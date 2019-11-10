@@ -93,8 +93,15 @@
           }
         });
         
-        $('.initiate-delete-thread').click(function(e){
-          console.log($(this).attr('data-form'))
+        $('#board-display').on('click', '.initiate-delete-thread', function(e){
+          if($(this).text('Delete Thread')){
+            $($(this).attr('data-form')).removeClass('d-none')
+            $(this).text('Cancel Delete')
+          }else if($(this).text('Cancel Delete')){
+            console.log('cancel delete')
+            $($(this).attr('data-form')).addClass('d-none')
+            $(this).text('Delete Thread')
+          }
           e.preventDefault();
         })
         
