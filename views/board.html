@@ -46,7 +46,7 @@
         if(!/\/$/.test(window.location.pathname)){
           window.location.href = window.location.pathname + '/'
         }
-        $('#board-title').text('Welcome to '+window.location.pathname.toLowerCase())
+        $('#board-title').text('Welcome to '+ decodeUri(window.location.pathname.toLowerCase()))
         $('#thread-error').text(sessionStorage.getItem('thread-error'))
         sessionStorage.removeItem('thread-error')
         
@@ -110,10 +110,11 @@
             $(this).text('Cancel Delete')
           }else if($(this).text() == 'Cancel Delete'){
             $($(this).attr('data-form')).addClass('d-none')
-            if()){
+            if(/thread/.test($(this).attr('data-form'))){
               $(this).text('Delete Thread')
-            }else if()
-            
+            }else if(/reply/.test($(this).attr('data-form'))){
+              $(this).text('Delete Reply')
+            }
           }
           e.preventDefault();
         })
