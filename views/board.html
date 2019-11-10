@@ -52,10 +52,10 @@
         sessionStorage.removeItem('thread-error')
         
         function displayThreads(threads){
-          threads.forEach(x => {
+          threads.forEach((x, i) => {
             let thread = ''
             thread += '<div class="thread px-2 px-md-5"><div class="main">';
-            thread += ('<form id="report-thread"><div class="form-row mb-4"><h2 class="thread-title">' + x.text + '</h2><input type="hidden" name="report_id" value="'+x._id+'"><button type="submit" class="btn btn-link pl-0 pl-md-2">Report Thread</button></div></form>')
+            thread += ('<form id="report-thread"><div class="form-row mb-4"><h2 class="thread-title" id="thread-title-' + i +'"></h2><input type="hidden" name="report_id" value="'+x._id+'"><button type="submit" class="btn btn-link pl-0 pl-md-2">Report Thread</button></div></form>')
             thread += ('<form id="delete-thread"><div class="form-row mb-5"><input type="hidden" value="' + x._id + '" name="thread_id" required><input class="form-control col-12 col-md-3" type="password" placeholder="delete thread" name="delete_password" required><button type="submit" class="btn btn-outline-danger">Delete</button></div></form>')
             thread += ('</div><div class="replies">')
             var hiddenCount = x.reply_count - 3;
@@ -78,6 +78,7 @@
             thread += ('<div class="form-row mb-5"><button class="btn btn-success" type="submit">Submit</button>')
             thread += ('</div></form></div></div></div>')
             $('#board-display').append(thread)
+            console.log($('#board-display').find('#thread-title'+i))
           })
           
         }
@@ -85,11 +86,10 @@
         $.ajax({
           url: "/api/threads/"+currentBoard,
           success: function(data){
-            console.log(data)
             displayThreads(data)
           },
           error: function(request, status, error){
-            console.log(request.responseText)
+            alert(request.responseText)
           }
         });
         
