@@ -14,5 +14,4 @@
 * Mongoose Schema: thread.js
 
 ### Testing
-* Unit Tests: 1_unit-tests.js
-* Functional Tests: 2_functional-tests.js
+* Functional Tests: functional-tests.js
