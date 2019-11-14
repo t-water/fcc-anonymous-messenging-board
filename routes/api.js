@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const threadSchema = require('../thread');
 
 const CONNECTION_STRING = process.env.DB;
-mongoose.connect(CONNECTION_STRING, {useNewUrlParser: true, useFindAndModify: false});
+mongoose.connect(CONNECTION_STRING, {useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true});
 
 
 module.exports = function(app) {
